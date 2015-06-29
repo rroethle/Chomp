@@ -1,6 +1,6 @@
 surveys = {
 	"Survey1" : {
-		"surveyTitle" : "Couchy room"
+		"surveyTitle" : "Couchy room",
 		"Q1" : {
 			"text" : "What should the name of the couch room be?",
 			"image" : null,
@@ -26,13 +26,13 @@ surveys = {
 				"lowerLimit" : 0,
 				"upperLimit" : 10
 			}
-		},
+		}
 	},
 
 
 
 	"Survey2" : {
-		"surveyTitle" : "Foo-Bar"
+		"surveyTitle" : "Foo-Bar",
 		"Q1" : {
 			"text" : "Foo?",
 			"image" : null,
@@ -61,3 +61,5 @@ surveys = {
 
 	}
 }
+
+alert("loaded");
