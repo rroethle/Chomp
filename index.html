@@ -13,37 +13,39 @@
 <body>
 
 
-<div id="login">Log In</div>
+<nav id="login">
+    <a href="">Log In</a>
+</nav>
 <hr/>
 
 <h1>Survey Builder</h1>
 
-<div id="nav_1">
-    <nav>
-        <a href="">New</a>
-        <a href="">Add Q</a>
-        <a href="">Save</a>
-        <a href="">Edit</a>
-    </nav>
+<div>
+    <span id="new_survey" class="app_func">New Survey</span>
+    <span id="add_q" class="app_func">Add Question</span>
+    <span id="save" class="app_func">Save</span>
+    <span id="edit" class="app_func">Edit</span>
 </div>
+<hr/>
 
-<div id="sidebar">
 
 <!-- JS generated content: overview sidebar -->
-
+<div id="sidebar">
+    <span id="side_title"></span>
+    <div id="overview"></div>
 </div>
 
-<div id="question">
 
+<div id="questions">
 <!-- JS generated content: create question panes -->
-
 </div>
+
+
 
 
 </body>
 
 
-<hr/>
 <footer>
     <p>
     <small>
@@ -52,11 +54,9 @@
     </p>
 </footer>
 
-<!--
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="assets/js/jquery.js"></script>
-<script src="assets/js/bootpag.js"></script>
--->
+
+<script src="jquery.js"></script>
+<script src="fakeSurveyDB.js"></script>
 
 </body>
 </html>
