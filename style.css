@@ -1,0 +1,14 @@
+body {
+	max-width: 80%;
+	margin: auto;
+	padding-top: 2%;
+}
+
+footer {
+	text-align: center;
+}
+
+#login {
+	display: block;
+	text-align: right;
+}
