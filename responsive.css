@@ -1,0 +1,25 @@
+@media screen and (min-width: 480px) {
+
+}
+
+@media screen and (min-width: 660px) {
+
+	nav {
+		float: right;
+		margin-right: 5%;
+		text-align: center;
+		width: 45%
+	}
+
+	header nav {
+		margin-top: 40px;
+	}
+
+	#head {
+		float: left;
+		margin-left: 5%;
+		text-align: center;
+		width: 45%;
+		padding: 0 0 20px 0;
+	}
+}

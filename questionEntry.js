@@ -3,7 +3,7 @@ $(document).ready(function()
 var mainPage = "";
 mainPage = displayQuestion(surveys.Survey1);
 
-document.getElementById("buid").innerHTML = mainPage;
+document.getElementById("build").innerHTML = mainPage;
 });
 
 function displayQuestion (records) {
