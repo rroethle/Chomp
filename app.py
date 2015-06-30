@@ -48,6 +48,6 @@ def create_or_update_unit():
     return str(unit),201
            
 if __name__ == '__main__':#initalizes main program
-    app.run(debug=True)#calls app.
+    app.run(host="0.0.0.0")#calls app.
     
     
