@@ -1,4 +1,84 @@
 body {
+	color: #22281B;
+	background: rgb(220,220,220);
+	font-family: 'Stint Ultra Expanded', sans-serif;
+	max-width: 90%; /* creates centered body with margin prop. below*/
+	margin: 0 auto;
+}
+
+a {
+	text-decoration: none;
+	margin: auto;
+}
+
+li {
+	list-style-type: none;
+}
+
+header {
+	color: #fff;
+	background: rgb(85,84,70);
+}
+
+nav, nav a:visited {
+	background: rgb(152,142,99);
+	color: #22281B;
+	text-align: center;
+	padding: 10px 0;
+	margin: 20px 0;
+}
+
+h1 {
+	font-family: 'Poller One', sans-serif;
+	margin-top: 15px;
+	padding-top: 25px;
+	font-size: 4em;
+	line-height: .5em;
+}
+
+h2 {
+	font-size: 1em;
+	margin: -10px 0 0;
+	font-weight: normal;
+}
+
+
+
+#logo {
+	color: #fff;
+	text-align: center;
+	margin: 0;
+}
+
+section {
+	float: left;
+	width: 45%;
+	margin: 2.5%;
+	background-color: rgb(202,192,149);
+	color: #22281B;
+}
+
+#sidebar {
+	width: 25%;
+}
+
+#question {
+	width: 65%;
+}
+
+.option:hover {
+	color: #ccc;
+}
+
+
+
+
+
+
+
+
+/*
+body {
 	max-width: 80%;
 	margin: auto;
 	padding-top: 2%;
@@ -10,7 +90,7 @@ footer {
 
 h1 {
 	font-size: 3em;
-	text-shadow: 3px 3px 2px rgb(150,150,150);
+	text-shadow: 2px 2px 2px rgb(150,150,150);
 }
 
 #login {
@@ -23,16 +103,17 @@ h1 {
 	padding: 5px;
 	margin: 3px;
 	border-radius: 5px;
-	box-shadow: 2px 2px 5px rgb(0,0,0);
+	box-shadow: 2px 2px 2px rgb(50,50,50);
 }
 
-#questions {
-	display: block;
-	float: right;
+.saved_load {
+	left-margin: 100px;
 }
 
 #sidebar {
 	background-color: rgb(240,240,240);
 	border-radius: 5px;
-	width: 25%
+	width: 20%;
+	box-shadow: 2px 2px 2px rgb(50,50,50);
 }
+*/
