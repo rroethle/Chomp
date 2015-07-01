@@ -1,19 +1,14 @@
-/* loads json file from database filled with survey entries and displays the record in html.
-*/
 
-$(document).ready(function()
-{
-var mainPage = "";
-// uses test database to load and display records.
-mainPage = displayQuestion(surveys.Survey1);
 
-document.getElementById("build").innerHTML = mainPage; //Needs to change based on location for final website
-});
+
+
+
 
 /* loops through survey record and displays each question in html to user
 */
-function displayQuestion (records) {
+function displayQuestionList (records) {
 	//initializes blank variables and starts on question number 1.
+	alert("Entering Display Questions")
 	var entries = "";
 	var questionNum = 1;
 	
@@ -21,7 +16,8 @@ function displayQuestion (records) {
 	   runs appropriate function to generate html based on answer.type for each record or question.
 	*/
 	for (record in records){
-		if(record != "surveyTitle" || record != "id"){
+		console.log(record)
+		if(record != "surveyTitle" && record != "id"){
 			
 			switch(records[record].answer.type) {
 				case "text":
@@ -92,3 +88,17 @@ function sliderHTML(questionNum,questionText,name,lowerlimit,upperlimit){
 }
 
 // end of function types for input
+
+
+
+/* loads json file from database filled with survey entries and displays the record in html.
+*/
+$(document).ready(function()
+{
+	alert("PageLoaded")
+	var mainPage = "";
+	// uses test database to load and display records.
+	mainPage = displayQuestionList(surveys.Survey1);
+
+	document.getElementById("build").innerHTML = mainPage; //Needs to change based on location for final website
+});
