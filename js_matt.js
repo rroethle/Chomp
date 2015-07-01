@@ -4,7 +4,13 @@ $("#add").on("click", function() {
 	var newQid = Number(Qid.slice(1)) + 1
 	var qQid = "Q"+newQid
 	var html = "<hr><br>"
+	var sidebar = generateSideBar(qQid)
 	html += displayQuestion(newQid)
 	$("#build").append(html);
-	$("#sidebar").append(html);
+	$("#sidebar").append(sidebar);
 });
+
+function generateSideBar(question){
+	var html = '<div id = "' + question + '-sidebar">Question ' + question + '<div><br>';
+	return html
+}

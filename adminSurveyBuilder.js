@@ -101,8 +101,9 @@ function generateInputChoices(QText){
 	'<input type = "text" name = "'+ QText + '.nameValue" id = "' + QText + '.nameValue"><br>' +
 	'<button id = "inputBoxButton" type = "button">Generate Inputs</button><br></div>'
 	return html;
-	
 }
+
+
 
 //main function used to generate new Question
 function displayQuestion (questionNum) {
