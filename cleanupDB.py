@@ -1,5 +1,5 @@
 from dao import *
 
-idNum = 2
+idNum = 1
 _dao = dao()
 _dao.delete_one(idNum)

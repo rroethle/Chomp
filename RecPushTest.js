@@ -2,17 +2,19 @@
 $(function () {
         $("#test").on("click", function (e) {
         	console.log("Triggered");
+
+            pushSurveyTemplate(surveys.Survey1, "units");
+
         	console.log("End of Triggered");
         });
     });
 
 
-
-function push_survey(record){
-    $.ajax({
-                url: 'http://localhost:5000/api/units/create', //adjust url accordingly to match app.py
+function pushSurveyTemplate(record, collection) {
+     $.ajax({
+                url: 'http://localhost:5000/api/' + collection + '/create',
                 type: 'POST',
-                data: JSON.stringify(record), //whatever i need to push from site to database replace this
+                data: JSON.stringify(record),
                 contentType: "application/json",
                 crossDomain: true,
                 headers: {'Content-Type':'application/json; charset=utf-8'},
@@ -28,7 +30,6 @@ function push_survey(record){
                 }
             });
 }
-
 
 // jQuery equivalent
 //var jqxhr = $.post( "localhost:5000/api/create_or_update_unit/",
