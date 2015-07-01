@@ -5,7 +5,7 @@ class dao(object):#class object called dao
     
     def __init__(self):#instantiating the class
         client = MongoClient(config['server'], config['port']) #the client is set to a mongo db client with a serve conn and a port config
-        self.db = client.chomp #this sets the database object to client.chomp
+        self.db = client.testchomp #this sets the database object to client.chomp
     
     def create_one(self,unit):#this method takes in units to create and insert one into the database
         units = self.db.units# a unit is equal to one unit in the database
@@ -15,7 +15,7 @@ class dao(object):#class object called dao
     def read_one(self,id):# this method takes in an id to look for a match in the DB
         unit = None #unit defaults to one
         try:
-            unit = self.db.units.find_one({"id": id,"active":True})#it tries unit and checks if it can find the active id
+            unit = self.db.units.find_one({"id": id})#,"active":True})#it tries unit and checks if it can find the active id
         except:
             unit = None#if it fails unit is none and returns to beginning
         return unit#if it finds the id return
@@ -37,6 +37,7 @@ class dao(object):#class object called dao
         return  unit['id']
 
     def delete_one(self,id):#this method takes in an id, and reads through th database
-        unit = self.read_one(id)#unit set equal to read once of the id. 
-        unit['active']=False#active goes to false
-        self.update_one(unit)# calls the update_one function to delete unit     
+        # unit = self.read_one(id)#unit set equal to read once of the id. 
+        # unit['active']=True#active goes to false
+        # self.update_one(unit)# calls the update_one function to delete unit 
+        self.db.units.remove({"id": id})  
