@@ -4,29 +4,31 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Practice</title>
+    <link rel="stylesheet" href="nomralize.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <title>Welcome ADMIN Brothers!</title>
   </head>
-  
 <body>
+
+<section class="loginform">
 Admin Panel:<br>
 <br>
-<form name="myform" onkeypress="validate()" method="post">
-Username:<br>
-<input type="text" name="username" id="username">
-<br>
-Password:<br>
-<input type="password" name="password" id="password">
-<br>
-
-
-<input type="submit" value="Submit" id="submit">
-
+<form name="login" action="placeholder" method="get" accept-charset="utf-8">
+<ul>
+	<li><label for="usermail">Email Bro</label>
+		<input type="email" name="usermail" placeholder="you_bro@your_domain.whatever" required></li>
+	<li><label for="password">Password Bro</label>
+		<input type="password" name="password" placeholder="whats your pass bro?" required></li>
+	<li>
+		<input type="submit" value="Login"></li>
+</ul>
 </form>
+</section>
+
+
 <script src='jquery.js'> </script>
 <script src='RobChompJS.js'> </script>
-
-
-
 
 </body>
 </html>
