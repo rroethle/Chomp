@@ -171,7 +171,9 @@ SIDEBAR & BUILD CONTENT
 	overflow: auto;
 }
 
-
+#set_title {
+	cursor: default;
+}
 
 
 

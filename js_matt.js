@@ -54,7 +54,23 @@ $("#add").on("click", function() {
 
 
 
-function generateSideBar(question,Qid){
-	var html = '<div id = "Q' + question + '-sidebar">Question ' + question + '<div><br>';
+function generateSideBar(question, Qid){
+	var html = '<div id = "Q' + question + '-sidebar"><a href="#' +Qid+ '">Question ' + question + '</a><div><br>';
 	return html;
 }
+
+
+/* CLICK TO CHANGE TITLE */
+$("#survey_title").click(function() {
+	$("#build_title").html("<input type='text' width='100' id='title_input' placeholder='click to add title'>");
+	$("#title_input").change(function() {
+		var title = ($("#title_input").val());	
+		$("#build_title").html("<button id='set_title'>" +title+ "</button>");
+		$("#sidebar p").html("<p>" +title+ "</p>")
+	});
+});
+
+/* NEW SURVEY CLICK TO INDEX.HTML */
+$("#new").click(function() {
+	window.location = "index.html";
+});
