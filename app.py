@@ -7,7 +7,7 @@ from flask import Flask, jsonify,request,abort,Response
 from config import config
 from bson.json_util import dumps,loads
 from dao import *
-from crossdomain import *
+#from crossdomain import *
 import simplejson
 import os.path
 
