@@ -106,6 +106,31 @@ def create_or_update_unit():
 
 
 
+# Attempt at flexible DAO
+
+@app.route('/api/read/<collection_id>', methods=['GET'])
+def get_surveys(collection_id="units", unit_id=None):
+    return get_survey(collection_id)
+
+@app.route('/api/read/<collection_id>/<int:unit_id>', methods=['GET'])
+def get_survey(collection_id="units", unit_id=None):
+    _dao = dao_flex(collection_id)
+
+    #unit = [unit for unit in units if unit['id'] == unit_id]
+    if(unit_id==None):
+        return dumps(_dao.read_all())
+    else:
+        unit =  _dao.read_one(unit_id)
+        if (unit == None):
+            return "invalid",500
+        else:
+            return dumps(unit)#jsonify({'unit':unit})
+
+
+
+
+
+
            
 if __name__ == '__main__':#initalizes main program
     app.run(debug=True,host="0.0.0.0")#calls app.
