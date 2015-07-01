@@ -1,4 +1,4 @@
-surveys = {
+surveys to = {
 	Survey1 : {
 		"id" : 1,
 		"surveyTitle" : "Couchy room",
