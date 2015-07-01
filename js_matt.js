@@ -1,5 +1,3 @@
-
-
 $("#add").on("click", function() {
 	var id = $('div').last().attr('id')
 	var Qid = id.substr(0, id.indexOf('.'));
@@ -7,9 +5,6 @@ $("#add").on("click", function() {
 	var qQid = "Q"+newQid
 	var html = "<hr><br>"
 	html += displayQuestion(newQid)
-	$("#build ul").append(html);
-});
-
-$("#build ul").change(function() {
-	$("#sidebar ul").append("#build ul");
+	$("#build").append(html);
+	$("#sidebar").append(html);
 });

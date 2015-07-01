@@ -1,26 +1,55 @@
+/**************************
+GRID WIDTH DESIGNATIONS
+**************************/
+[class*='col-'] {
+	float: left;
+}
+
+.col-2-3 {
+	width: 66.66%;
+}
+.col-1-3 {
+	width: 33.33%;
+}
+.col-1-2 {
+	width: 50%;
+}
+.col-1-4 {
+	width: 25%;
+}
+.col-1-8 {
+	width: 12.5%;
+}
+
+.module {
+  background: #eee;
+}
+
+
+
 /**********************************
 GENERAL
 **********************************/
 body {
-	color: #22281B;
-	background: rgb(230,230,230);
-	font-family: 'Stint Ultra Expanded', serif;
-	max-width: 90%; /* creates centered body with margin prop. below*/
-	margin: 0 auto;
+  color: #22281B;
+  background: rgb(230,230,230);
+  font-family: 'Stint Ultra Expanded', serif;
+  max-width: 90%;
+  margin: 0 auto;
 }
 
 a {
-	text-decoration: none;
-	margin: auto;
+  text-decoration: none;
+  margin: auto;
 }
 
 li {
-	list-style-type: none;
+  list-style-type: none;
 }
 
 footer {
-	clear: both;
-	text-align: center;
+  clear: both;
+  text-align: center;
 }
 
 
@@ -28,39 +57,42 @@ footer {
 /**********************************
 HEADING
 **********************************/
+/* header is all items on green header field */
 header {
-	float: left;
-	margin: 1% 0 30px 0;
-	padding: 2px 0 0 0;
-	width: 100%;
-	color: #fff;
-	background: rgb(85,84,70);
-	border-radius: 10px 20px 10px 20px;
-	box-shadow: 5px 5px 10px #000;
-
+  float: left;
+  margin: 1% 0 30px 0;
+  padding: 2px 0 0 0;
+  width: 100%;
+  color: #fff;
+  background: rgb(85,84,70);
+  border-radius: 10px 20px 10px 20px;
+  box-shadow: 5px 5px 10px #000;
 }
 
-h2 {
-	font-size: 1em;
-	margin: -5px 0 0;
-	font-weight: normal;
-}
-
+/* #head is CHOMP & --survey builder-- text */
 #head {
-	color: #fff;
-	text-align: center;
-	margin: 0;
-	text-shadow: 5px 5px 10px #000;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  text-shadow: 5px 5px 10px #000;
 }
 
+/* h1 is CHOMP text only */
 h1 {
-	font-family: 'Poller One', sans-serif;
-	margin: 15px 0 0;
-	padding: 15px 0;
-	font-size: 4em;
-	font-weight: normal;
-	line-height: 0.8em;
-	transform: scale(1.1, 1);
+  font-family: 'Poller One', sans-serif;
+  margin: 15px 0 0;
+  padding: 15px 0;
+  font-size: 4em;
+  font-weight: normal;
+  line-height: 0.8em;
+  transform: scale(1.1, 1);
+}
+
+/* h2 is --survey builder-- text only */
+h2 {
+  font-size: 1em;
+  margin: -5px 0 0;
+  font-weight: normal;
 }
 
 
@@ -68,53 +100,41 @@ h1 {
 /**********************************
 NAVIGATION
 **********************************/
+/* nav is header navigation buttons */
 nav {
-	border-radius: 5px;
-	box-shadow: 2px 2px 10px #333;
-}
-
-nav, nav a:visited {
 	background: rgb(202,192,149);
-	color: #22281B;
-	text-align: center;
-	padding: 10px 0;
-	margin: 20px 0;
+  color: #22281B;
+  text-align: center;
+  padding: 10px 0;
+  margin: 20px 0;
+  border-radius: 5px;
+  box-shadow: 2px 2px 10px #333;
 }
 
-nav a:hover, button:hover {
-	color: #ccc;
+/* changes color of nav buttons on hover */
+button:hover {
+  color: #ccc;
 }
 
-nav ul {
-	list-style: none;
-	margin: 0 10px;
-	padding: 0;
-}
-
-nav li {
-	display: inline-block;
-}
-
-nav a {
-	font-weight: 800;
-	padding: 15px 20px;
-}
-
+/* adds text shadow to nav button text */
 .option {
-	text-shadow: 0px 0px 10px #444;
+  text-shadow: 0px 0px 10px #444;
 }
 
+/* sets different color for login button */
 #login {
-	color: #eee;
+  color: #eee;
 }
 
+/* changes login appearance on hover */
 #login:hover {
-	color: rgb(0,0,0);
-	background: rgb(250,250,250);
-	box-shadow: 5px 5px 10px #333;
-	border-radius: 20px;
+  color: rgb(0,0,0);
+  background: rgb(250,250,250);
+  box-shadow: 5px 5px 10px #333;
+  border-radius: 20px;
 }
 
+/* sets button properties */
 button{
   margin      : 0;
   padding: 1px 20px;
@@ -129,28 +149,17 @@ button{
 }
 
 
+
 /**********************************
 SIDEBAR & BUILD CONTENT
 **********************************/
-#sidebar ul li, #build ul li {
-	float: left;
-	width: 45%;
-	margin: 2.5%;
+#sidebar, #build {
+	margin: 0 2.5% 5%;
+	padding: 1% 1%;
 	background-color: rgb(202,192,149);
 	color: #22281B;
-	border-radius: 5px 5px 5px 5px;
-	border-style: solid;
-	border-color: rgb(75,75,75);
-	box-shadow: 5px 5px 10px #444;
-	padding: 1% 1%;
-}
-
-#sidebar {
-	width: 20%;
-	text-align: center;
-}
-
-#build {
-	width: 60%;
-	margin-left: 25%;
+  border-radius: 5px 5px 5px 5px;
+  border-style: solid;
+  border-color: rgb(75,75,75);
+  box-shadow: 5px 5px 10px #444;
 }
