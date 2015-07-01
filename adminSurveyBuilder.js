@@ -111,12 +111,13 @@ function displayQuestion (questionNum) {
 	var Qid = "Q" + questionNum;
 	var QText = Qid + "Text";
 	var AText = Qid + "Answer";
-	var Bid = Qid + "Button";
+	var Bid = Qid + "deleteButton";
 	var subDivID = Qid + "SubDiv";
 	var responseType = generateResponseType(Qid);
 	var textResponse = generateTextBox(Qid);
 	var responseId = Qid + ".answer.type";
-	var entry = "<div id=" + Qid + "><p><hr><br>" + "Question " + questionNum + "<br>" +
+	var entry = "<div id=" + Qid + "><p><hr><br>" + "Question " + questionNum + '<button id="deleteQuestion"'
+	+ ' type = "button">Delete Question</button>'+"<br>" + 
 	'<TEXTAREA id="' + QText + '"  rows=6 cols=80 placeholder="Default Text"></TEXTAREA><br>' +
 	'<div id="' + subDivID +'">' + responseType + textResponse + '</div>'
 	return entry;
