@@ -1,17 +1,25 @@
 
 $(function () {
         $("#test").on("click", function (e) {
-        	console.log("Triggered")
-			$.post("http://10.2.20.3:5000/api/units/creates",
-			    {
-			        name: "Donald Duck",
-			        city: "Duckburg"
-			    },
-			    function(data, status){
-			        alert("Data: " + data + "\nStatus: " + status);
-			    });
-        	
+        	console.log("Triggered");
+            $.ajax({
+                url: 'http://localhost:5000/api/units/create',
+                type: 'POST',
+                data: JSON.stringify(surveys.Survey2),
+                contentType: "application/json",
+                crossDomain: true,
+                headers: {'Content-Type':'application/json; charset=utf-8'},
+                dataType: 'json',
 
+                success: function(response) {
+                	console.log("Passed")
+                    console.log(response);
+                },
+                error: function(error) {
+                	console.log("Failed")
+                    console.log(error);
+                }
+            });
         	console.log("End of Triggered");
         });
     });
@@ -52,7 +60,7 @@ $(function () {
 
 
 // $.ajax({
-//     url: 'http://10.2.20.3:5000/api/units/create',
+//     url: 'http://10.2.20.31:5000/api/units/create',
 //     type: 'POST',
 //     data: {Test: "Test"},
 //     contentType: "application/json",

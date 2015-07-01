@@ -1,5 +1,6 @@
 surveys = {
-	"Survey1" : {
+	Survey1 : {
+		"id" : 1,
 		"surveyTitle" : "Couchy room",
 		"Q1" : {
 			"text" : "What should the name of the couch room be?",
@@ -31,7 +32,8 @@ surveys = {
 
 
 
-	"Survey2" : {
+	Survey2 : {
+		"id": 2,
 		"surveyTitle" : "Foo-Bar",
 		"Q1" : {
 			"text" : "Foo?",
@@ -85,11 +87,9 @@ function pushRecord() {
 
 
 
-
-
-sidebarTitle()
-pushRecord()
-displaySidebar(surveys.Survey1.Q4, 4)
+// sidebarTitle()
+// pushRecord()
+// displaySidebar(surveys.Survey1.Q4, 4)
 
 
 
