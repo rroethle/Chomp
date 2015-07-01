@@ -11,7 +11,7 @@ function displayQuestion (records) {
 	questionNum = 1;
 	
 	for (record in records){
-		if(record != "surveyTitle"){
+		if(record != "surveyTitle" || record != "id"){
 			console.log(records[record].answer.type)
 			switch(records[record].answer.type) {
 				case "text":

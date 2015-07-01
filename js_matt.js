@@ -1,7 +1,13 @@
 
 
 $("#add").on("click", function() {
-	$("#build ul").append("<li>Question 1</li>");
+	var id = $('div').last().attr('id')
+	var Qid = id.substr(0, id.indexOf('.'));
+	var newQid = Number(Qid.slice(1)) + 1
+	var qQid = "Q"+newQid
+	var html = "<hr><br>"
+	html += displayQuestion(newQid)
+	$("#build ul").append(html);
 });
 
 $("#build ul").change(function() {
