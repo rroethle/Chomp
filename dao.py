@@ -5,7 +5,7 @@ class dao(object):#class object called dao
     
     def __init__(self):#instantiating the class
         client = MongoClient(config['server'], config['port']) #the client is set to a mongo db client with a serve conn and a port config
-        self.db = client.testchomp #this sets the database object to client.chomp
+        self.db = client.chomp #this sets the database object to client.chomp
     
     def create_one(self,unit):#this method takes in units to create and insert one into the database
         units = self.db.units# a unit is equal to one unit in the database
@@ -47,7 +47,7 @@ class dao_flex(object):#class object called dao
     
     def __init__(self, collectionID):#instantiating the class
         client = MongoClient(config['server'], config['port']) #the client is set to a mongo db client with a serve conn and a port config
-        self.db = client.testchomp #this sets the database object to client.chomp
+        self.db = client.chomp #this sets the database object to client.chomp
         self.collection_ID = collectionID
     
     def create_one(self,unit):#this method takes in units to create and insert one into the database

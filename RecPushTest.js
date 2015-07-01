@@ -2,27 +2,33 @@
 $(function () {
         $("#test").on("click", function (e) {
         	console.log("Triggered");
-            $.ajax({
-                url: 'http://localhost:5000/api/units/create',
+            pushSurveyTemplate(surveys.Survey1, "units");
+        	console.log("End of Triggered");
+        });
+    });
+
+
+
+function pushSurveyTemplate(record, collection) {
+     $.ajax({
+                url: 'http://localhost:5000/api/' + collection + '/create',
                 type: 'POST',
-                data: JSON.stringify(surveys.Survey2),
+                data: JSON.stringify(record),
                 contentType: "application/json",
                 crossDomain: true,
                 headers: {'Content-Type':'application/json; charset=utf-8'},
                 dataType: 'json',
 
                 success: function(response) {
-                	console.log("Passed")
+                    console.log("Passed")
                     console.log(response);
                 },
                 error: function(error) {
-                	console.log("Failed")
+                    console.log("Failed")
                     console.log(error);
                 }
             });
-        	console.log("End of Triggered");
-        });
-    });
+}
 
 
 
