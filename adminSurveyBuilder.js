@@ -115,7 +115,7 @@ function displayQuestion (questionNum) {
 	var responseType = generateResponseType(Qid);
 	var textResponse = generateTextBox(Qid);
 	var responseId = Qid + ".answer.type";
-	var entry = "<div id=" + Qid + "><p><hr><br>" + "Question " + questionNum + '<button id="deleteQuestion"'
+	var entry = "<div class = 'question' id=" + Qid + "><p><hr><br>" + "Question " + questionNum + '<button id="deleteQuestion"'
 	+ ' type = "button">Delete Question</button>'+"<br>" + 
 	'<TEXTAREA id="' + QText + '"  rows=6 cols=80 placeholder="Default Text"></TEXTAREA><br>' +
 	'<div id="' + subDivID +'">' + responseType + textResponse + '</div>'
@@ -179,69 +179,14 @@ $(document).ready($('body').on('change', 'select', function(){
 		})
 );
 
-
-
-// initial debugging function calls
-function addTextLine(divID) {
-	// Temporary Tag Holder
-	AText = "Test";
-	// Somehow we need to figure out what the last tag used was, and add to it.
-	document.getElementById(divID).innerHTML += '<input type="text" id="' + AText + '"  placeholder="Enter Here" ><br>';
-};
-
 // On change character pressed
 $(document).ready($('body').on('input propertychange paste', 'input', function()
 		{
-			console.log($(this).attr('id'));
-			console.log($(this).closest('div').attr('id'));
-			console.log($(this).val());
-			var json = {};   
+			//console.log($(this).attr('id'));
+			//console.log($(this).closest('div').attr('id'));
+			//console.log($(this).val());
+			generateJSON()
 
-/*
-var surveys = {}
-$('#build').each(function(i,a) {
-    surveys.shipment = {};
-
-    $(a).find('.box').each(function(j,b) {
-        var boxid = $(b).data('boxid');
-        json.shipment[boxid] = {};
-
-        $(b).find('.candy').each(function(k,c) {
-            var $c = $(c),
-                candyid = $c.data('candyid'),
-                color = $c.data('color'),
-                flavor = $c.data('flavor'),
-                qty = $c.data('qty');
-            json.shipment[boxid][candyid] = {};
-            if (color) json.shipment[boxid][candyid].color = color;
-            if (flavor) json.shipment[boxid][candyid].flavor = flavor;
-            if (qty) json.shipment[boxid][candyid].qty = qty;
-        });
-   });
-}); */
-
-/* {
-    "shipment": {
-        "a": {
-            "1": {
-                "color": "orange",
-                "flavor": "orange",
-                "qty": "7"
-            },
-            "2": {
-                "color": "red",
-                "flavor": "strawberry",
-                "qty": "4"
-            }
-        },
-        "b": {
-            "3": {
-                "color": "green",
-                "flavor": "lime"
-            }
-        }
-    }
-} */
 			
 			
 		})
@@ -250,10 +195,71 @@ $('#build').each(function(i,a) {
 // On change character pressed
 $(document).ready($('body').on('input propertychange paste', 'TEXTAREA', function()
 		{
-			console.log($(this).attr('id'));
-			console.log($(this).closest('div').attr('id'));
-			console.log($(this).val());
+			//console.log($(this).attr('id'));
+			//console.log($(this).closest('div').attr('id'));
+			//console.log($(this).val());
+			generateJSON()
 		})
 	);
+	
+function generateJSON(){
 
+	var surveys = {}
+	var title = $('#surveyTitle').text()
+	console.log(title)
+	surveys["surveyTitle"] = title
+	surveys["id"] = title
+	counter = 1
+	
+    $('#build').find('.question').each(function() {
+		question = "Q"+counter
+		optionsArray = []
+		type = $('#' + question + '\\.answer\\.type').val()
+		lowerLimit = $('#' + question + '\\.answer\\.options.min').val()
+		upperLimit = $('#' + question + '\\.answer\\.options.max').val()
+		questionText = $('#' + question + 'Text').val()
+		$('#build').find('.'+ question + '\\.answer\\.options\\.input').each(function(){
+			optionsValue = $('.' + question + '\\.answer\\.options\\.input').val()
+			optionsArray.push(optionsValue)
+		})
+			
+		surveys[question] = {
+							"text": questionText,
+							"image": "",
+							"answer": {
+							"type": type,
+							"options": optionsArray,
+							"lowerLimit": lowerLimit,
+							"upperLimit": upperLimit
+							}
+		};
+		counter += 1
+})
+pushSurvey = "surveys."+title
+//pushSurveyTemplate(surveys.Survey2, "units")
+localStorage.setItem(title, surveys);
+console.log(surveys)
+}
+
+
+function pushSurveyTemplate(record, collection) {
+     $.ajax({
+                url: 'http://localhost:5000/api/' + collection + '/create',
+                type: 'POST',
+                data: JSON.stringify(record),
+                contentType: "application/json",
+                crossDomain: true,
+                headers: {'Content-Type':'application/json; charset=utf-8'},
+                dataType: 'json',
+
+                success: function(response) {
+                    console.log("Passed")
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.log("Failed")
+                    console.log(error);
+                }
+            });
+}
 

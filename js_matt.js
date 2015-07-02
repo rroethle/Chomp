@@ -77,7 +77,7 @@ $("#survey_title").click(function() {
 	$("#title_input").change(function() {
 		var title = ($("#title_input").val());	
 		$("#build_title").html("<button id='set_title'>" +title+ "</button>");
-		$("#sidebar p").html("<p>" +title+ "</p>")
+		$("#sidebar p").html('<p id="surveyTitle">' +title+ "</p>")
 	});
 });
 
