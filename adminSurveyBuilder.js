@@ -25,7 +25,7 @@ function init() {
 		//loops through numCheck number of times to generate the correct number of input boxes.
 		// adds Qid.answer.options.choices.i for each choice as id
 		for (var i = 0; i< numCheck; i++){
-			$('#'+choiceID).append('<input type = "text" id = "'+Qid + '.answer.options.choices.' + i + '"><br>');
+			$('#'+choiceID).append('<input type = "text" class = "'+Qid + '.answer.options.input' + '"><br>');
 		}
 	});
 	
@@ -41,6 +41,7 @@ function init() {
 	})
 	
 	
+	
 	 
         
 };
@@ -54,7 +55,7 @@ function init() {
    -slider
 */
 function generateResponseType(QText){
-	var responseQuestion = '<label for="'+ QText + '.answer.type' + '">Choose Question Response Type </label>'+
+	var responseQuestion = 'Choose Question Response Type'+
                 '<select id="'+ QText + '.answer.type" >' + '<option>Text</option>' +
 				'<option>Multi-Line Text</option>' + '<option>Check Box</option>' +
 				'<option>Radio Button</option>' + '<option>Slider</option>' + '</select>'
@@ -95,10 +96,8 @@ function generateSlider(QText){
 // adds .QText.nameValue to name of grouping
 function generateInputChoices(QText){
 	var id = QText + '.answer.options';
-	var html = '<div id = "' + id + '"><label for="'+QText + '.inputValue">Number of Inputs</label>'+
+	var html = '<div id = "' + id + '">Number of Inputs' +
 	'<input type = "number" id = "'+QText + '.inputValue" value = "2" min = "2" max = "10" step = "1"><br>'+
-	'<label for="' + QText + '.nameValue">Name of Group</label>'+
-	'<input type = "text" name = "'+ QText + '.nameValue" id = "' + QText + '.nameValue"><br>' +
 	'<button id = "inputBoxButton" type = "button">Generate Inputs</button><br></div>'
 	return html;
 }
@@ -196,6 +195,55 @@ $(document).ready($('body').on('input propertychange paste', 'input', function()
 			console.log($(this).attr('id'));
 			console.log($(this).closest('div').attr('id'));
 			console.log($(this).val());
+			var json = {};   
+
+/*
+var surveys = {}
+$('#build').each(function(i,a) {
+    surveys.shipment = {};
+
+    $(a).find('.box').each(function(j,b) {
+        var boxid = $(b).data('boxid');
+        json.shipment[boxid] = {};
+
+        $(b).find('.candy').each(function(k,c) {
+            var $c = $(c),
+                candyid = $c.data('candyid'),
+                color = $c.data('color'),
+                flavor = $c.data('flavor'),
+                qty = $c.data('qty');
+            json.shipment[boxid][candyid] = {};
+            if (color) json.shipment[boxid][candyid].color = color;
+            if (flavor) json.shipment[boxid][candyid].flavor = flavor;
+            if (qty) json.shipment[boxid][candyid].qty = qty;
+        });
+   });
+}); */
+
+/* {
+    "shipment": {
+        "a": {
+            "1": {
+                "color": "orange",
+                "flavor": "orange",
+                "qty": "7"
+            },
+            "2": {
+                "color": "red",
+                "flavor": "strawberry",
+                "qty": "4"
+            }
+        },
+        "b": {
+            "3": {
+                "color": "green",
+                "flavor": "lime"
+            }
+        }
+    }
+} */
+			
+			
 		})
 	);
 
