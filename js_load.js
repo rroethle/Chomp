@@ -45,7 +45,7 @@ $("#load").click(function() {
 });
 
 $(document).ready(function() {
-	$("body").on("click", "li", function() {
+	$("body").on("click", "a", function() {
 		alert(event.target.id);
 	});
 });
