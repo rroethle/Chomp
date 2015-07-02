@@ -7,43 +7,29 @@
 
     <link href='http://fonts.googleapis.com/css?family=Poller+One|Stint+Ultra+Expanded' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="responsive.css">
+    <!-- <link rel="stylesheet" href="responsive.css"> -->
     
     <title>Chomp Survey | helium(He)</title>
   </head>
 
   <body>
     <header>
-      <a href="splash.html" id="head">
+      <a href="" id="head">
         <h1>CHOMP</h1>
         <h2>-- survey builder --</h2>
       </a>
       
       <nav>
-        <button class="option" id="new">New Survey</button>
-        <button class="option" id="add">Add Question</button>
-        <button class="option" id="save">Save</button>
-        <button class="option" id="load">Load</button>
-        <button class="option" id="login">LOG IN</button>
+        <button class="option" id="save">Save Answers</button>
       </nav>
     </header>
 
 
     <!-- <div class="grid grid-pad"> -->
-      <div class="col-1-3" id="sb_parent">
-        <div class="module" id="sidebar">
-          <p>Survey Title</p>    
-        </div>
-      </div>
-    <!-- </div> -->
-
-
-    <!-- <div class="grid grid-pad"> -->
-      <div class="col-2-3" id="build_parent">
-        <div class="module" id="build">
+      <div class="col-2-3" id="user_parent">
+        <div class="module" id="user">
           <div id="build_title">
-            <button id="survey_title">Click to Add Survey Title</button>
-              <div id="build_area"></div>
+            <button id="user_title">Click to Add Survey Title</button>
           </div>
         </div>
       </div>
@@ -57,10 +43,8 @@
     </footer>
     
     <script src="jquery.js"></script>
+    <script src="fakeSurveyDB.js"></script>
     <script src="questionEntry.js"></script>
-    <script src="findAndReplaceDOMText.js"></script>
-    <script src="adminSurveyBuilder.js"></script>
-    <script src="js_matt.js"></script>
   </body>
 
 </html>

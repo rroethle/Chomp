@@ -201,3 +201,30 @@ SPLASH PAGE
 #chomp {
 	padding-bottom: 40px;
 }
+
+
+
+/**********************************
+END USER PAGE
+**********************************/
+#user_parent {
+  margin: 230px 2.5% 5%;
+  width: 90%;
+  float: left;
+  /*background: orange;*/
+}
+
+#user {
+  float: left;
+  width: 70%;
+  text-align: center;
+  overflow: auto;
+  padding: 1% 1%;
+  background-color: rgb(222,212,169);
+  color: #22281B;
+  border-radius: 5px 5px 5px 5px;
+  border-style: solid;
+  border-color: rgb(75,75,75);
+  box-shadow: 5px 5px 10px #444;
+  margin: 0 15%;
+}
