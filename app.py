@@ -10,6 +10,7 @@ from dao import *
 #from crossdomain import *
 import simplejson
 import os.path
+from generatorHasher import *
 
 app = Flask(__name__)
 
@@ -115,6 +116,15 @@ def enduser(args=""):  # pragma: no cover
     return Response(content, mimetype="text/html")
 
 
+### Admin Bulk Survey Generator/Hasher
+# @app.route('/api/generate/<int:surveyTemplateID>/<int:num_of_surveys>', methods=['GET'])
+# def get_surveys(surveyTemplateID="0", num_of_surveys=0):
+#     generatorHasher.main(surveyTemplateID, num_of_surveys)
+#     return dumps("Complete")
+    
+
+
+
 
 
 
@@ -124,7 +134,7 @@ def enduser(args=""):  # pragma: no cover
 def get_surveys(collection_id="units", unit_id=None):
     return get_survey(collection_id)
 
-@app.route('/api/read/<collection_id>/<int:unit_id>', methods=['GET'])
+@app.route('/api/read/<collection_id>/<unit_id>', methods=['GET'])
 def get_survey(collection_id="units", unit_id=None):
     _dao = dao_flex(collection_id)
 
@@ -184,13 +194,10 @@ def get_max_id(collection_id="units"):
     return dumps(maxID)
 
 
-@app.route('/api/delete/<collection_id>/<int:unit_id>', methods=['GET'])
+@app.route('/api/delete/<collection_id>/<unit_id>', methods=['GET'])
 def delete_id(collection_id="units"):
-    print ("Entering Get Max ID method")
-    _dao = dao_flex(collection_id)
-    maxID = _dao.getMaxID()
-    print ("Get Max ID = ", maxID)
-    return dumps(maxID)
+
+    return dumps("Need to Build")
 
 
 
@@ -225,7 +232,7 @@ def delete_id(collection_id="units"):
 #     return flask.render_template('login.html', form=form)
 
 
-    
+
 
 
 

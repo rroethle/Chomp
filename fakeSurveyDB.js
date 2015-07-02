@@ -1,6 +1,6 @@
 surveys = {
 	Survey1 : {
-		"id" : 1,
+		"id" : "1",
 		"surveyTitle" : "Couchy room",
 		"Q1" : {
 			"text" : "What should the name of the couch room be?",
@@ -33,7 +33,7 @@ surveys = {
 
 
 	Survey2 : {
-		"id": 2,
+		"id": "2",
 		"surveyTitle" : "Foo-Bar",
 		"Q1" : {
 			"text" : "Foo?",
