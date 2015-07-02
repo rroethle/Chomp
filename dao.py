@@ -1,5 +1,5 @@
 from config import config
-from pymongo import MongoClient
+from pymongo import MongoClient, DESCENDING
 
 class dao(object):#class object called dao
     
@@ -43,7 +43,7 @@ class dao(object):#class object called dao
         self.db.units.remove({"id": id})  
 
 
-class dao_flex(object):#class object called dao
+class dao_flex(object):#This is an attempt at a flexible DAO object.
     
     def __init__(self, collectionID):#instantiating the class
         client = MongoClient(config['server'], config['port']) #the client is set to a mongo db client with a serve conn and a port config
@@ -76,8 +76,11 @@ class dao_flex(object):#class object called dao
         }, upsert=False, multi=False)
 
     def getMaxID(self):#this method gets the highest id in the database
-        unit = self.db.find().sort({id:1}).limit(1)#this variable finds and sorts the results for the maximum unit id. 
-        return  unit['id']
+        # print ("Entering DAO_FLEX method: getMaxID")
+        unit = self.db[self.collection_ID].find({}, {'id': True, "_id" : False}).sort("id", -1).limit(1)#this variable finds and sorts the results for the maximum unit id. 
+        # print ("***************Finished find/Sort")
+        # print (unit)
+        return unit
 
     def delete_one(self,id):#this method takes in an id, and reads through th database
         # unit = self.read_one(id)#unit set equal to read once of the id. 

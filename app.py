@@ -37,12 +37,6 @@ def index():  # pragma: no cover
     content = get_file('index.html')
     return Response(content, mimetype="text/html")
 
-@app.route('/enduser', methods=['GET'])
-@app.route('/enduser<args>')
-def enduser(args=""):  # pragma: no cover
-    content = get_file('end_user.html'+args)
-    return Response(content, mimetype="text/html")
-
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -112,7 +106,19 @@ def create_or_update_unit():
 
 
 
-# Attempt at flexible DAO
+#### End user page
+
+@app.route('/enduser', methods=['GET'])
+@app.route('/enduser<args>')
+def enduser(args=""):  # pragma: no cover
+    content = get_file('end_user.html'+args)
+    return Response(content, mimetype="text/html")
+
+
+
+
+
+#### Attempt at flexible DAO
 
 @app.route('/api/read/<collection_id>', methods=['GET'])
 def get_surveys(collection_id="units", unit_id=None):
@@ -170,6 +176,18 @@ def create_or_update_record(collection_id="units"):
     
     #print "4"
     return str(unit),201
+
+
+@app.route('/api/max_id/<collection_id>', methods=['GET'])
+def get_max_id(collection_id="units"):
+    print ("Entering Get Max ID method")
+    _dao = dao_flex(collection_id)
+    maxID = _dao.getMaxID()
+    print ("Get Max ID = ", maxID)
+    return dumps(maxID)
+
+
+
 
 
            
