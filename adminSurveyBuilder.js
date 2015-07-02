@@ -38,12 +38,7 @@ function init() {
 		var html = "<hr><br>";//
 		html += displayQuestion(newQid);
 		$('#results').append(html);
-	})
-	
-	
-	
-	 
-        
+	}) 
 };
 
 /* generates response types available for user in a select input box. 
@@ -206,10 +201,14 @@ function generateJSON(){
 
 	var surveys = {}
 	var title = $('#surveyTitle').text()
-	console.log(title)
 	surveys["surveyTitle"] = title
 	surveys["id"] = title
 	counter = 1
+	surveys["html"] = {
+					"sidebar" : $('#sidebar').html(),
+					 "build" : $('#build').html()
+					 }
+	
 	
     $('#build').find('.question').each(function() {
 		question = "Q"+counter
@@ -235,11 +234,52 @@ function generateJSON(){
 		};
 		counter += 1
 })
-pushSurvey = "surveys."+title
-//pushSurveyTemplate(surveys.Survey2, "units")
-localStorage.setItem(title, surveys);
-console.log(surveys)
+
+//pushSurvey = "surveys."+title
+//pushSurveyTemplate(surveys, "units")
+
+
 }
+
+function loadAdminSurvey(survey){
+	buildHTML = survey["build"]
+	buildSideBar = survey["sidebar"]
+	$('#build').html(buildHTML)
+	$('#sidebar').html(buildSideBar)
+	questionNum = 1
+	for (record in survey){
+		
+		qNum = "Q"+questionNum
+
+		if(record != "surveyTitle" && record != "id" && record != "_id" && record != "build" && record != "sidebar"){
+			var tempRec = survey[record];
+			var tempAns = tempRec["answer"];
+			var tempType = tempAns["type"];
+
+			switch(tempType) {
+				case "text":
+					$('#' + qNum + '\\.answer\\.type' ).val("Text");
+					break;
+				case "radio":
+					$('#' + qNum + '\\.answer\\.type' ).val("Radio Button");
+					break;
+				case "textarea":
+					$('#' + qNum + '\\.answer\\.type' ).val("Multi-Line Text");
+					break;
+				case "checkbox":
+					$('#' + qNum + '\\.answer\\.type' ).val("Check Box");
+					break;
+				case "slider":
+					$('#' + qNum + '\\.answer\\.type' ).val("Slider");
+				default:
+					console.log("displayQuestionList: do not recognize type " + tempType)
+					break;
+				}	
+		questionNum += 1;
+		};
+	};
+}
+
 
 
 function pushSurveyTemplate(record, collection) {
@@ -262,4 +302,9 @@ function pushSurveyTemplate(record, collection) {
                 }
             });
 }
+
+
+
+
+
 

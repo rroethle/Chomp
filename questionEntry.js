@@ -23,7 +23,7 @@ function displayQuestionList (records) {
 
 
 
-		if(record != "surveyTitle" && record != "id" && record != "_id"){
+		if(record != "surveyTitle" && record != "id" && record != "_id" && record != "build" && record !="sidebar"){
 
 			//Debug
 			var tempRec = records[record];
