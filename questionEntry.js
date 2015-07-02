@@ -8,33 +8,58 @@
 */
 function displayQuestionList (records) {
 	//initializes blank variables and starts on question number 1.
-	alert("Entering Display Questions")
 	var entries = "";
 	var questionNum = 1;
 	
 	/* as long as the record header isn't surveryTitle or id, then it attempts to build the HTML for reach type.
 	   runs appropriate function to generate html based on answer.type for each record or question.
 	*/
+
+	console.log(records);
 	for (record in records){
-		console.log(record)
-		if(record != "surveyTitle" && record != "id"){
-			
-			switch(records[record].answer.type) {
+		// console.log(typeof record);
+		console.log(record);
+
+
+
+
+		if(record != "surveyTitle" && record != "id" && record != "_id"){
+
+			//Debug
+			var tempRec = records[record];
+			// console.log(typeof tempRec);
+			console.log(tempRec);
+
+			var tempAns = tempRec["answer"];
+			// console.log(typeof tempAns);
+			console.log(tempAns);
+
+			var tempType = tempAns["type"];
+			// console.log(typeof tempType);
+			console.log(tempType);
+
+
+			switch(tempType) {
 				case "text":
-					entries +=  textHTML(questionNum,records[record].text);
+					entries +=  textHTML(questionNum,tempRec["text"]);
 					break;
 				case "radio":
-					entries += radioHTML(questionNum,records[record].text,records[record].answer.name,records[record].answer.options);
+					entries += radioHTML(questionNum,tempRec["text"],tempAns["name"],tempAns["options"]);
 					break;
 				case "textarea":
-					entries += textAreaHTML(questionNum,records[record].text, records[record].text.rows, records[record].text.cols);
+					var tempText = tempRec["text"];
+					var tempRows = tempText["rows"];
+					var tempCols = tempText["cols"];
+					entries += textAreaHTML(questionNum,tempRec["text"], tempRows, tempCols);
 					break;
 				case "checkbox":
-					entries +=  checkboxHTML(questionNum,records[record].text,records[record].answer.name,records[record].answer.options);
+					
+					entries +=  checkboxHTML(questionNum,tempRec["text"],tempAns["name"],tempAns["options"]);
 					break;
 				case "slider":
-					entries += sliderHTML(questionNum,records[record].text, records[record].answer.name,records[record].answer.lowerLimit, records[record].answer.upperLimit);
+					entries += sliderHTML(questionNum,tempRec["text"], tempAns["name"],tempAns["lowerLimit"], tempAns["upperLimit"]);
 				default:
+					console.log("displayQuestionList: do not recognize type " + tempType)
 					break;
 				}	
 		questionNum += 1;
@@ -95,10 +120,22 @@ function sliderHTML(questionNum,questionText,name,lowerlimit,upperlimit){
 */
 $(document).ready(function()
 {
-	alert("PageLoaded")
-	var mainPage = "";
-	// uses test database to load and display records.
-	mainPage = displayQuestionList(surveys.Survey1);
+	console.log("Page Loaded")
+	var a = window.location.toString();
+	a = a.substring(a.indexOf('survey=')+7);
+	console.log("Survey ID is: " + a);
 
-	document.getElementById("build").innerHTML = mainPage; //Needs to change based on location for final website
+	var A;
+	$.get(("http://localhost:5000/api/read/units/" + a), function (data, status) {
+		A = data;
+		console.log("A is " + A);
+		A = JSON && JSON.parse(A) || $.parseJSON(A);
+
+
+		var mainPage = "";
+		mainPage = displayQuestionList(A);
+		document.getElementById("build").innerHTML = mainPage; //Needs to change based on location for final website
+	});
+
+	
 });
