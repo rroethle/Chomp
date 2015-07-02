@@ -195,9 +195,10 @@ def get_max_id(collection_id="units"):
 
 
 @app.route('/api/delete/<collection_id>/<unit_id>', methods=['GET'])
-def delete_id(collection_id="units"):
-
-    return dumps("Need to Build")
+def delete_id(collection_id="units", unit_id=None):
+    _dao = dao_flex(collection_id)
+    _dao.delete_one(unit_id)
+    return dumps("Deletion Complete")
 
 
 
