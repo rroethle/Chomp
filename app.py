@@ -37,6 +37,12 @@ def index():  # pragma: no cover
     content = get_file('index.html')
     return Response(content, mimetype="text/html")
 
+@app.route('/enduser', methods=['GET'])
+@app.route('/enduser<args>')
+def enduser(args=""):  # pragma: no cover
+    content = get_file('end_user.html'+args)
+    return Response(content, mimetype="text/html")
+
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -128,7 +134,42 @@ def get_survey(collection_id="units", unit_id=None):
 
 
 
+@app.route('/api/create/<collection_id>', methods=['POST','GET','OPTIONS'])
+def create_or_update_record(collection_id="units"):
 
+    ### Debug Data Pull from AJAX Call
+    # print "Method has been reached "
+    # print request.args
+    # print request.values
+    # print request.stream
+    # print request.data
+    # print request.method
+    # print request.path
+    # print request.url
+    # print request.is_xhr
+    # print request.json
+
+
+    unit = simplejson.loads(request.data)
+
+    #print "1"
+    if not unit:
+        abort(400)
+    _dao = dao_flex()
+    
+    #print "2"
+    tmpunit = _dao.read_one(unit['id'])
+
+    #print "3"
+    if(tmpunit == None):
+        print "creating"
+        _dao.create_one(unit)
+    else:
+        print "updating"
+        _dao.update_one(unit)
+    
+    #print "4"
+    return str(unit),201
 
 
            
