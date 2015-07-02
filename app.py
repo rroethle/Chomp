@@ -138,8 +138,6 @@ def get_survey(collection_id="units", unit_id=None):
         else:
             return dumps(unit)#jsonify({'unit':unit})
 
-
-
 @app.route('/api/create/<collection_id>', methods=['POST','GET','OPTIONS'])
 def create_or_update_record(collection_id="units"):
 
@@ -155,13 +153,12 @@ def create_or_update_record(collection_id="units"):
     # print request.is_xhr
     # print request.json
 
-
     unit = simplejson.loads(request.data)
 
     #print "1"
     if not unit:
         abort(400)
-    _dao = dao_flex()
+    _dao = dao_flex(collection_id)
     
     #print "2"
     tmpunit = _dao.read_one(unit['id'])
@@ -187,6 +184,48 @@ def get_max_id(collection_id="units"):
     return dumps(maxID)
 
 
+@app.route('/api/delete/<collection_id>/<int:unit_id>', methods=['GET'])
+def delete_id(collection_id="units"):
+    print ("Entering Get Max ID method")
+    _dao = dao_flex(collection_id)
+    maxID = _dao.getMaxID()
+    print ("Get Max ID = ", maxID)
+    return dumps(maxID)
+
+
+
+
+
+
+
+# #### Attempt at Login Control
+
+# @login_manager.user_loader
+# def load_user(userid):
+#     return User.get(userid)
+
+
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     # Here we use a class of some kind to represent and validate our
+#     # client-side form data. For example, WTForms is a library that will
+#     # handle this for us.
+#     form = LoginForm()
+#     if form.validate_on_submit():
+#         # Login and validate the user.
+#         login_user(user)
+
+#         flask.flash('Logged in successfully.')
+
+#         next = flask.request.args.get('next')
+#         if not next_is_valid(next):
+#             return flask.abort(400)
+
+#         return flask.redirect(next or flask.url_for('index'))
+#     return flask.render_template('login.html', form=form)
+
+
+    
 
 
 
