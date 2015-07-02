@@ -38,7 +38,7 @@ $("#load").click(function() {
 		if(titlesCollection.length > 0) {
 			$("#build_title").html("<p>Select Survey to Load</p><ul id='load_menu'></ul>");
 			for(var i = 0; i < titlesCollection.length; i++) {
-				$("#build_title").append("<li><a href=''>" +idCollection[i]+ ": " +titlesCollection[i]+ "</a></li>");
+				$("#build_title").append("<li id='" +i+ "'><a href=''>" +idCollection[i]+ ": " +titlesCollection[i]+ "</a></li>");
 			}
 		}
 	});	
