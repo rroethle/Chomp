@@ -284,7 +284,7 @@ function loadAdminSurvey(survey){
 
 function pushSurveyTemplate(record, collection) {
      $.ajax({
-                url: 'http://localhost:5000/api/' + collection + '/create',
+                url: 'http://localhost:5000/api/create' + collection,
                 type: 'POST',
                 data: JSON.stringify(record),
                 contentType: "application/json",
