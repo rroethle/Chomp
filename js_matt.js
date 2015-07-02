@@ -76,7 +76,7 @@ $("#survey_title").click(function() {
 	$("#build_title").html("<input type='text' width='100' id='title_input' placeholder='click to add title'>");
 	$("#title_input").change(function() {
 		var title = ($("#title_input").val());	
-		$("#build_title").html("<button id='set_title'>" +title+ "</button>");
+		$("#build_title").html("<button id='set_title'>" +title+ "</button><div id='build_area'></div>");
 		$("#sidebar p").html('<p id="surveyTitle">' +title+ "</p>")
 	});
 });
