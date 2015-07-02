@@ -117,10 +117,10 @@ def enduser(args=""):  # pragma: no cover
 
 
 ### Admin Bulk Survey Generator/Hasher
-# @app.route('/api/generate/<int:surveyTemplateID>/<int:num_of_surveys>', methods=['GET'])
-# def get_surveys(surveyTemplateID="0", num_of_surveys=0):
-#     generatorHasher.main(surveyTemplateID, num_of_surveys)
-#     return dumps("Complete")
+@app.route('/api/generate/<surveyTemplateID>/<int:num_of_surveys>', methods=['GET'])
+def generate_surveys(surveyTemplateID="0", num_of_surveys=0):
+    main(surveyTemplateID, num_of_surveys)
+    return dumps("Complete")
     
 
 
