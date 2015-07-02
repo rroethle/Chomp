@@ -118,8 +118,10 @@ function sliderHTML(questionNum,questionText,name,lowerlimit,upperlimit){
 
 /* loads json file from database filled with survey entries and displays the record in html.
 */
-$(document).ready(function()
-{
+
+
+$("#load").click(function() {
+//$(document).ready(function() {
 	console.log("Page Loaded")
 	var a = window.location.toString();
 	a = a.substring(a.indexOf('survey=')+7);
@@ -134,8 +136,6 @@ $(document).ready(function()
 
 		var mainPage = "";
 		mainPage = displayQuestionList(A);
-		document.getElementById("build").innerHTML = mainPage; //Needs to change based on location for final website
-	});
-
-	
+		document.getElementById("build_area").innerHTML = mainPage; //Needs to change based on location for final website
+	});	
 });
