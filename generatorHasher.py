@@ -43,7 +43,7 @@ def push_ids_to_collection(survey_name):
 			"template_id":survey_name,
 			"answers":{}})
 
-def main(): ##reminder pass in survey name and number to generate, blank for testing 
+def main(survey_name, num_surveys_to_gen): ##reminder pass in survey name and number to generate, blank for testing 
 	gen_survey_id(survey_name, num_surveys_to_gen)
 	gen_url_from_survey_id(survey_name)
 	push_ids_to_collection(survey_name)
@@ -54,5 +54,5 @@ def main(): ##reminder pass in survey name and number to generate, blank for tes
 if __name__ == '__main__':
 	num_surveys_to_gen = int(raw_input("How many surveys do you want to generate?>> "))
 	survey_name = str(raw_input("What is the name of your survey?>> "))
-	main()
+	main(survey_name, num_surveys_to_gen)
 
