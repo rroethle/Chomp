@@ -1,9 +1,3 @@
-
-
-
-
-
-
 /* loops through survey record and displays each question in html to user
 */
 function displayQuestionList (records) {
@@ -18,9 +12,14 @@ function displayQuestionList (records) {
 	console.log(records);
 	for (record in records){
 		// console.log(typeof record);
-		console.log(record);
+		//console.log(record);
 
+		if(record == "surveyTitle") {
+			var title = records[record];
+			console.log(title);
 
+			$("#user_title").html(title);
+		}
 
 
 		if(record != "surveyTitle" && record != "id" && record != "_id"){
@@ -74,7 +73,7 @@ function displayQuestionList (records) {
 // inputs: question Number and questionText to generate html.
 function textHTML(questionNum,questionText){
 	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>" +
-	'<input type="text" id="Answer"'+ questionNum  +'placeholder="Enter Here" ></p>';
+	'<input type="text" class="answer" name="' +questionNum+ '" placeholder="Enter Here" ></p>';
 	return html;
 }
 
@@ -82,7 +81,7 @@ function textHTML(questionNum,questionText){
 function radioHTML(questionNum, questionText, name, options){
 	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>";
 	for (option in options){
-	optionLine = '<input type="radio" name="' + name + ' value="'+options[option] + '">' + options[option] + '<br>'
+	optionLine = '<input type="radio" class="answer" id="' +questionNum+ 'radio" name="' +questionNum+ 'radio" value="'+options[option] + '">' + options[option] + '<br>'
 	html += optionLine
 	}
 	return html;
@@ -92,7 +91,7 @@ function radioHTML(questionNum, questionText, name, options){
 function checkboxHTML(questionNum, questionText, name, options){
 	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>"
 	for (option in options){
-	optionLine = '<input type="checkbox" name="' + name + ' value="'+options[option] + '">' + options[option] + '<br>'
+	optionLine = '<input type="checkbox" class="answer" id="' +questionNum+ 'checkbox" name="' +questionNum+ 'checkbox" value="'+options[option] + '">' + options[option] + '<br>'
 	html += optionLine
 	}
 	return html;
@@ -101,14 +100,14 @@ function checkboxHTML(questionNum, questionText, name, options){
 //inputs: question Number, questionText, number of rows (height) of text box, and number of cols(width) of text box
 function textAreaHTML(questionNum,questionText,rows,cols){
 	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>" +
-	'<textarea rows="' + rows + 'cols= ' + cols + '"></textarea>';
+	'<textarea class="answer" name="' +questionNum+ '" rows="' + rows + 'cols= ' + cols + '"></textarea>';
 	return html;
 }
 
 //inputs: question Number, question Text, name of slider, lower limit for range, and upper limit for range.
 function sliderHTML(questionNum,questionText,name,lowerlimit,upperlimit){
 	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>" +
-	'<input type="range" name = "'+ name + '" min='+ lowerlimit + '" max="'+ upperlimit + '" value = "'+lowerlimit+'">';
+	'<input type="range" class="answer" id="slider" name = "' +questionNum+ '" min='+ lowerlimit + '" max="'+ upperlimit + '" value = "'+lowerlimit+'">';
 	return html;
 }
 
@@ -123,19 +122,100 @@ function sliderHTML(questionNum,questionText,name,lowerlimit,upperlimit){
 //$("#load").click(function() {
 $(document).ready(function() {
 	console.log("Page Loaded")
-	var a = window.location.toString();
-	a = a.substring(a.indexOf('survey=')+7);
-	console.log("Survey ID is: " + a);
+	var args = window.location.toString();
+	enduserID = args.substring(args.indexOf('survey=')+7);
+	console.log("Enduser ID is: " + enduserID);
 
-	var A;
-	$.get(("http://localhost:5000/api/read/units/" + a), function (data, status) {
-		A = data;
-		console.log("A is " + A);
-		A = JSON && JSON.parse(A) || $.parseJSON(A);
+	var enduserData;
+	$.get(("http://localhost:5000/api/read/completed_surveys/" + enduserID), function (enduser_data, status) {
+		enduserData = enduser_data;
+		console.log("Data is " + enduserData);
+		var enduserJSON = JSON && JSON.parse(enduserData) || $.parseJSON(enduserData);
+
+		var templateID = enduserJSON["template_id"];
+		console.log("Template that was used is: " + templateID);
+
+		$.get(("http://localhost:5000/api/read/survey_templates/" + templateID), function (template_data, status) {
+			templateData = template_data;
+			console.log(typeof templateData);
+			console.log(templateData);
+			var templateJSON = JSON && JSON.parse(templateData) || $.parseJSON(templateData);
 
 
-		var mainPage = "";
-		mainPage = displayQuestionList(A);
-		document.getElementById("user_area").innerHTML = mainPage; //Needs to change based on location for final website
-	});	
+			var mainPage = "";
+			mainPage = displayQuestionList(templateJSON);
+			document.getElementById("user_area").innerHTML = mainPage; //Needs to change based on location for final website
+		});	
+	});
 });
+
+
+
+//GET INPUT VALUES
+survey = {};
+$(document.body).on("change", ".answer", function () {
+	var name = (event.target.name);
+	var type = (event.target.type);
+	if(type != "radio" && type != "checkbox") {
+		var a = $("input[name=" +name+ "]").val();
+		survey[name] = a;
+		console.log(survey);
+	} else if(type == "radio") {
+		var a = $("input[name=" +name+ "]:checked").val();
+		survey[name] = a;
+		console.log(survey);
+	} else if(type == "checkbox") {
+		var a = $("input:checkbox:checked").map(function() {
+			return this.value;
+		}).get();
+		survey[name] = a;
+		console.log(survey);
+	}
+});
+
+	$('body').on('click','#save',function(){
+		pushCompletedSurvey(survey,"completed_surveys")
+});
+
+function pushCompletedSurvey(record, collection) {
+     $.ajax({
+                url: 'http://localhost:5000/api/create/' + collection,
+                type: 'POST',
+                data: JSON.stringify(record),
+                contentType: "application/json",
+                crossDomain: true,
+                headers: {'Content-Type':'application/json; charset=utf-8'},
+                dataType: 'json',
+
+                success: function(response) {
+                    console.log("Passed")
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.log("Failed")
+                    console.log(error);
+                }
+            });
+}
+
+
+
+
+/*
+$(document.body).on("change", "#slider", function () {
+	var s = $("#slider").val();
+	console.log(s);
+});
+
+$(document.body).on("change", function () {
+	var r = $("input[name=3radio]:checked").val();
+	console.log(r);
+});
+
+$(document.body).on("change", function () {
+	var c = $("input:checkbox:checked").map(function() {
+		return this.value;
+	}).get();
+	console.log(c);
+});
+*/

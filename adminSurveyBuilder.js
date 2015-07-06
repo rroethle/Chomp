@@ -80,7 +80,12 @@ function init() {
 				finalID = maxValue + 1;
 			}
 			finalID = finalID.toString();
+			if (existCheck === true){
+				generateJSONExisting(finalID)
+			}
+			else{
 			generateJSON(finalID);
+			}
 		});
 	};
 }); // end of save click event function
@@ -307,6 +312,51 @@ function generateJSON(id){
 pushSurveyTemplate(surveys, "survey_templates");
 }
 
+function generateJSONExisting(id){
+	var surveys = {}; // initialize empty object.
+	var title = $('#survey_title').text();
+
+	surveys["surveyTitle"] = title;
+	surveys["id"] = id;
+	var counter = 1;
+	
+    $('#build').find('.question').each(function() {
+		var question = "Q"+counter;
+		var optionsArray = []; // stores the value for any input values used for radio or checkbox inputs.
+		var type = $('#' + question + '\\.answer\\.type').val(); // select option type used for each input box.
+		var lowerLimit = $('#' + question + '\\.answer\\.min').val(); // slider min value
+		var upperLimit = $('#' + question + '\\.answer\\.max').val(); // slider max value
+		var questionText = $('#' + question + 'Text').val();
+		var inputNum = $('#' + question + '\\.inputValue').val(); // not used but currently stores value for input's generated, optionsArray length is used instead.
+		//populates optionsArray with input values for checkbox or radio box.
+		for (var i = 0; i < inputNum; i++){
+			optionsValue = $('#' + question + '\\.answer\\.options\\.input\\.' +i ).val();
+			optionsArray.push(optionsValue);
+		};
+		// "number" was added to keep track of the order with the iterator that will loop through
+		// in loadAdminSurvey
+		surveys[question] = {
+							"text": questionText,
+							"image": "",
+							"answer": {
+								"type": type,
+								"options": optionsArray,
+								"lowerLimit": lowerLimit,
+								"upperLimit": upperLimit,
+								"number": counter
+							}
+						};
+		counter += 1;
+		console.log(counter)// increments counter by 1 to loop through each question.
+});
+record = {}
+record["id"] = id
+// end of question loop.
+// Ajax call to send json object to collection. Uses object and collection name for inputs.
+deleteSurveyTemplate(record,"survey_templates")
+pushSurveyTemplate(surveys, "survey_templates");
+}
+
 // creates title html for build and sidebar section. Title text is used for input.
 function generateTitle(title){
 		$("#build_title").html("<button id='survey_title'>" +title+ "</button><div id='build_area'></div>");
@@ -422,10 +472,10 @@ function loadAdminSurvey(survey1,num){
 							var upperLimit = tempAns["upperLimit"];
 							$('#' + qNum + '\\.answer\\.min').val(lowerLimit);
 							$('#' + qNum + '\\.answer\\.max').val(upperLimit);
-							
+							break;
 						case "Calendar":
 							$('#' + qNum + '\\.answer\\.type' ).val("Calendar");
-						
+							break;
 					default:
 						console.log("displayQuestionList: do not recognize type " + tempType)
 						break;
