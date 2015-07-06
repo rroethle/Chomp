@@ -14,14 +14,14 @@
 <section class="loginform">
 Admin Panel:<br>
 <br>
-<form name="login" action="placeholder" method="get" accept-charset="utf-8">
+<form name="login" onsubmit="return false" method="post" accept-charset="utf-8">
 <ul>
 	<li><label for="usermail">Email Bro</label>
-		<input type="email" name="usermail" placeholder="you_bro@your_domain.whatever" required></li>
+		<input type="username" name="usermail" id="username" placeholder="you_bro@your_domain.whatever" required></li>
 	<li><label for="password">Password Bro</label>
-		<input type="password" name="password" placeholder="whats your pass bro?" required></li>
+		<input type="password" name="password" id="password" placeholder="whats your pass bro?" required></li>
 	<li>
-		<input type="submit" value="Login"></li>
+		<input type="button" value="Login" onclick="login_call()"></li>
 </ul>
 </form>
 </section>
@@ -29,6 +29,7 @@ Admin Panel:<br>
 
 <script src='jquery.js'> </script>
 <script src='RobChompJS.js'> </script>
+
 
 </body>
 </html>
