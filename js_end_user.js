@@ -141,10 +141,13 @@ $(document).ready(function() {
 			console.log(templateData);
 			var templateJSON = JSON && JSON.parse(templateData) || $.parseJSON(templateData);
 
+			survey["id"] = enduserID;
 
 			var mainPage = "";
 			mainPage = displayQuestionList(templateJSON);
-			document.getElementById("user_area").innerHTML = mainPage; //Needs to change based on location for final website
+			document.getElementById("user_area").innerHTML = mainPage;  //Needs to change based on location for final website
+
+
 		});	
 	});
 });
