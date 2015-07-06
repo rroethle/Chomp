@@ -12,9 +12,14 @@ function displayQuestionList (records) {
 	console.log(records);
 	for (record in records){
 		// console.log(typeof record);
-		console.log(record);
+		//console.log(record);
 
+		if(record == "surveyTitle") {
+			var title = records[record];
+			console.log(title);
 
+			$("#user_title").html(title);
+		}
 
 
 		if(record != "surveyTitle" && record != "id" && record != "_id"){
@@ -68,7 +73,7 @@ function displayQuestionList (records) {
 // inputs: question Number and questionText to generate html.
 function textHTML(questionNum,questionText){
 	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>" +
-	'<input type="text" id="Answer"'+ questionNum  +'placeholder="Enter Here" ></p>';
+	'<input type="text" class="answer" name="' +questionNum+ '" placeholder="Enter Here" ></p>';
 	return html;
 }
 
@@ -76,7 +81,7 @@ function textHTML(questionNum,questionText){
 function radioHTML(questionNum, questionText, name, options){
 	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>";
 	for (option in options){
-	optionLine = '<input type="radio" id="' +questionNum+ 'radio" name="' +questionNum+ 'radio" value="'+options[option] + '">' + options[option] + '<br>'
+	optionLine = '<input type="radio" class="answer" id="' +questionNum+ 'radio" name="' +questionNum+ 'radio" value="'+options[option] + '">' + options[option] + '<br>'
 	html += optionLine
 	}
 	return html;
@@ -86,7 +91,7 @@ function radioHTML(questionNum, questionText, name, options){
 function checkboxHTML(questionNum, questionText, name, options){
 	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>"
 	for (option in options){
-	optionLine = '<input type="checkbox" id="' +questionNum+ 'checkbox" name="' + questionNum + 'checkbox" value="'+options[option] + '">' + options[option] + '<br>'
+	optionLine = '<input type="checkbox" class="answer" id="' +questionNum+ 'checkbox" name="' +questionNum+ 'checkbox" value="'+options[option] + '">' + options[option] + '<br>'
 	html += optionLine
 	}
 	return html;
@@ -95,14 +100,14 @@ function checkboxHTML(questionNum, questionText, name, options){
 //inputs: question Number, questionText, number of rows (height) of text box, and number of cols(width) of text box
 function textAreaHTML(questionNum,questionText,rows,cols){
 	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>" +
-	'<textarea rows="' + rows + 'cols= ' + cols + '"></textarea>';
+	'<textarea class="answer" name="' +questionNum+ '" rows="' + rows + 'cols= ' + cols + '"></textarea>';
 	return html;
 }
 
 //inputs: question Number, question Text, name of slider, lower limit for range, and upper limit for range.
 function sliderHTML(questionNum,questionText,name,lowerlimit,upperlimit){
 	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>" +
-	'<input type="range" name = "'+ name + '" min='+ lowerlimit + '" max="'+ upperlimit + '" value = "'+lowerlimit+'">';
+	'<input type="range" class="answer" id="slider" name = "' +questionNum+ '" min='+ lowerlimit + '" max="'+ upperlimit + '" value = "'+lowerlimit+'">';
 	return html;
 }
 
@@ -135,8 +140,44 @@ $(document).ready(function() {
 });
 
 
+
 //GET INPUT VALUES
-$(document.body).on("change", "#Answer", function () {
-	var a = $("#Answer").val();
-	console.log(a);
+survey = {};
+$(document.body).on("change", ".answer", function () {
+	var name = (event.target.name);
+	var type = (event.target.type);
+	if(type != "radio" && type != "checkbox") {
+		var a = $("input[name=" +name+ "]").val();
+		survey[name] = a;
+		console.log(survey);
+	} else if(type == "radio") {
+		var a = $("input[name=" +name+ "]:checked").val();
+		survey[name] = a;
+		console.log(survey);
+	} else if(type == "checkbox") {
+		var a = $("input:checkbox:checked").map(function() {
+			return this.value;
+		}).get();
+		survey[name] = a;
+		console.log(survey);
+	}
 });
+
+/*
+$(document.body).on("change", "#slider", function () {
+	var s = $("#slider").val();
+	console.log(s);
+});
+
+$(document.body).on("change", function () {
+	var r = $("input[name=3radio]:checked").val();
+	console.log(r);
+});
+
+$(document.body).on("change", function () {
+	var c = $("input:checkbox:checked").map(function() {
+		return this.value;
+	}).get();
+	console.log(c);
+});
+*/
