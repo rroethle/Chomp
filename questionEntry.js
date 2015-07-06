@@ -1,11 +1,14 @@
-
-
-
-
-
-
-/* loops through survey record and displays each question in html to user
+/* receives json object and generates end user survey.
+ * loops through each survey record and displays each question in html to user
 */
+
+// function runs to allow datepicker work with jQueryUI if they select Calendar
+ $(function() {
+$('body').on('click','#datepicker',function(){
+	 $( "#datepicker" ).datepicker();
+})
+  });
+
 function displayQuestionList (records) {
 	//initializes blank variables and starts on question number 1.
 	var entries = "";
@@ -23,7 +26,7 @@ function displayQuestionList (records) {
 
 
 
-		if(record != "surveyTitle" && record != "id" && record != "_id" && record != "build" && record !="sidebar"){
+		if(record != "surveyTitle" && record != "id" && record != "_id"){
 
 			//Debug
 			var tempRec = records[record];
@@ -58,6 +61,9 @@ function displayQuestionList (records) {
 					break;
 				case "slider":
 					entries += sliderHTML(questionNum,tempRec["text"], tempAns["name"],tempAns["lowerLimit"], tempAns["upperLimit"]);
+				case "calendar":
+					entries += calendarHTML(questionNum, tempRec["text"]);
+				
 				default:
 					console.log("displayQuestionList: do not recognize type " + tempType)
 					break;
@@ -73,14 +79,20 @@ function displayQuestionList (records) {
 
 // inputs: question Number and questionText to generate html.
 function textHTML(questionNum,questionText){
-	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>" +
+	var html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>" +
 	'<input type="text" id="Answer"'+ questionNum  +'placeholder="Enter Here" ></p>';
 	return html;
 }
 
+function calendarHTML(questionNum, questionText) {
+	var html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>" +
+	'<p>Choose Date: <input type="text" id="datepicker"></p>'
+	return html
+}
+
 //inputs: question Number, questionText, name of group for radio buttons, and options array for the values.
 function radioHTML(questionNum, questionText, name, options){
-	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>";
+	var html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>";
 	for (option in options){
 	optionLine = '<input type="radio" name="' + name + ' value="'+options[option] + '">' + options[option] + '<br>'
 	html += optionLine
