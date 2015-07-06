@@ -128,7 +128,7 @@ $(document).ready(function() {
 	console.log("Survey ID is: " + a);
 
 	var A;
-	$.get(("http://localhost:5000/api/read/units/" + a), function (data, status) {
+	$.get(("http://localhost:5000/api/read/survey_templates/" + a), function (data, status) {
 		A = data;
 		console.log("A is " + A);
 		A = JSON && JSON.parse(A) || $.parseJSON(A);
