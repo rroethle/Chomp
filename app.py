@@ -194,7 +194,7 @@ def get_max_id(collection_id="units"):
     return dumps(maxID)
 
 
-@app.route('/api/delete/<collection_id>/<unit_id>', methods=['GET'])
+@app.route('/api/delete/<collection_id>/<unit_id>', methods=['GET', 'POST', 'OPTIONS'])
 def delete_id(collection_id="units", unit_id=None):
     _dao = dao_flex(collection_id)
     _dao.delete_one(unit_id)
@@ -203,36 +203,21 @@ def delete_id(collection_id="units", unit_id=None):
 
 
 
+#### Attempt at Login Control
 
 
 
-# #### Attempt at Login Control
-
-# @login_manager.user_loader
-# def load_user(userid):
-#     return User.get(userid)
-
-
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     # Here we use a class of some kind to represent and validate our
-#     # client-side form data. For example, WTForms is a library that will
-#     # handle this for us.
-#     form = LoginForm()
-#     if form.validate_on_submit():
-#         # Login and validate the user.
-#         login_user(user)
-
-#         flask.flash('Logged in successfully.')
-
-#         next = flask.request.args.get('next')
-#         if not next_is_valid(next):
-#             return flask.abort(400)
-
-#         return flask.redirect(next or flask.url_for('index'))
-#     return flask.render_template('login.html', form=form)
-
-
+@app.route('/login', methods=['POST','OPTIONS'])
+def login():
+    print "Debug console login 1"
+    _dao = dao_flex('users')
+    unit = simplejson.loads(request.data)
+    print unit
+    if not unit:
+        abort(400)
+    result = (_dao.verify_user(unit))    
+    print "Debug App.py results = ", result
+    return dumps(result)
 
 
 

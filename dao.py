@@ -87,3 +87,21 @@ class dao_flex(object):#This is an attempt at a flexible DAO object.
         # unit['active']=True#active goes to false
         # self.update_one(unit)# calls the update_one function to delete unit 
         self.db[self.collection_ID].remove({"id": id})  
+
+    def verify_user(self, unit):##This works, returns true or false depending on password correct or not
+        user_name = unit["username"]
+        pass_word = unit["password"]
+        print user_name
+        print pass_word
+        temp_rec = self.db[self.collection_ID].find_one({"user": user_name})#pulls record from db
+        if temp_rec != None:
+            print "user found"
+            temp_pw = temp_rec["pass"] #pass pulled from mongodb
+            print temp_pw
+            if pass_word == temp_pw:
+                #do something
+                return True
+        elif temp_rec == None:
+            print "User not found"
+            return False
+        return False
