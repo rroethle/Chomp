@@ -109,6 +109,12 @@ function generateResponseType(QText){
 	return responseQuestion;
 }
 
+function generateAnswerTextBox(QText,answer) {
+	var id = QText + '.answer.text';
+	var html = '<div id="' + QText + '.answer.text"><TEXTAREA rows="2" cols="80" disabled>' + answer + '</TEXTAREA><br></div>';
+	return html;
+}
+
 // generates html for new text input box.
 // adds .answer.text to question number for id.
 function generateTextBox(QText) {
@@ -381,15 +387,16 @@ function generateSideBar(question, Qid){
  * and number of record interested in num. Accessed this way because of asynchronous Ajax call.
 */
 function loadAdminSurvey(survey1,num){
+
 	num = num - 1; //subtract 1 from record entered because of "0" indexing 
 	var survey = survey1[num]; // individual survey object generated.
-	
 	// load screen cleared (next two items)
 	$('#build_title li').remove();
 	$('#sidebar p').empty();
 
 	
 	var surveyTitle = survey["surveyTitle"];
+	console.log(surveyTitle)
 	generateTitle(surveyTitle);
 	var questionNum = 1; // starting point to loop through questions found in record
 	var surveyEmpty = false; // flag used to indicate when rebuilding is complete.
@@ -517,3 +524,109 @@ function pushSurveyTemplate(record, collection) {
                 }
             });
 }
+
+
+function loadCompleteSurvey(survey1,num){
+
+	for (record in survey1){
+		tempRecord = survey1[record]
+		if (tempRecord["id"] == num){
+			num = record
+			break
+		}
+	}
+
+	var survey = survey1[num]; // individual survey object generated.
+	// load screen cleared (next two items)
+	$('#build_title li').remove();
+	$('#sidebar p').empty();
+
+	
+	var surveyTitle = survey["surveyTitle"];
+	generateTitle(surveyTitle);
+	var questionNum = 1; // starting point to loop through questions found in record
+	var surveyEmpty = false; // flag used to indicate when rebuilding is complete.
+	
+	/* due to record data coming in a different order than what was stored in the json file, the object
+	 * must be looped through iteratively so it can be re-organized and displayed on screen. The question
+	 * numbers are matched up.
+	*/
+	while (surveyEmpty == false){
+		
+		for (record in survey){
+			
+			var qNum = "Q"+questionNum;
+			if (record != "surveyTitle" && record != "id" && record != "_id"){
+				//generate variables used for accessing data in records.
+				var tempRec = survey[record];
+				console.log(tempRec)
+				var tempAns = tempRec["answer"];
+				var tempOpt = tempAns["options"];
+				//the numbers match, then this is the next question needed to display and the data will be built.
+				if (tempAns["number"] == questionNum){
+					var question = displayQuestion(questionNum); //html for blank question
+					var sidebarQuestion = generateSideBar(questionNum, qNum); //html for sidebar
+					$("#build").append(question); //blank question appended to display
+					$("#sidebar").append(sidebarQuestion); // sidebar question text appended to sidebar
+					//variables used for creating new id's for elements.
+					var choiceID = qNum + "\\.answer\\.options\\.choices";
+					var numChoices = tempOpt.length;
+					var checkID = qNum + "SubDiv";
+					var tempType = tempAns["type"];
+					var text = survey[record].text;
+					$('#' + qNum + 'Text' ).val(text);
+					var tempText = qNum + "\\.answer\\.text";
+					$('#'+tempText).empty();
+				//switch case used based on the answer type used in the select cases.
+					switch(tempType) {
+						case "Text":
+							$('#' + qNum + '\\.answer\\.type' ).val("Text");
+							var textHTML = generateTextBox(qNum);
+							$('#'+tempText).html(textHTML);
+							
+							break;
+					
+						case "Multi-Line Text":
+							$('#' + qNum + '\\.answer\\.type' ).val("Multi-Line Text");
+							var textAreaHTML = generateTextArea(qNum);
+							$('#'+tempText).html(textAreaHTML);
+							break;
+						
+						case "Radio Button":
+							$('#' + qNum + '\\.answer\\.type' ).val("Radio Button");
+							var textHTML = generateTextBox(qNum);
+							$('#'+tempText).html(textHTML);
+							break;
+						
+						case "Check Box":
+							$('#' + qNum + '\\.answer\\.type' ).val("Check Box");
+							var textHTML = generateTextBox(qNum);
+							$('#'+tempText).html(textHTML);
+							break;
+						
+						case "Slider":
+							$('#' + qNum + '\\.answer\\.type' ).val("Slider");
+							var textHTML = generateTextBox(qNum);
+							$('#'+tempText).html(textHTML);
+							break;
+						case "Calendar":
+							$('#' + qNum + '\\.answer\\.type' ).val("Calendar");
+							var textHTML = generateTextBox(qNum);
+							$('#'+tempText).html(textHTML);
+							break;
+					default:
+						console.log("displayQuestionList: do not recognize type " + tempType)
+						break;
+					};//end of switch case
+			delete survey[record]; //removes question from record
+			questionNum += 1;
+				}; //end of if check to see if numbers match
+			}; // end of if check to make sure the record is using the title, id, or _id.
+		}; // end of for loop
+		checkNum = Object.keys(survey).length;
+		if (checkNum <= 3){
+		console.log(survey)
+		surveyEmpty = true;
+		};
+		}
+	}

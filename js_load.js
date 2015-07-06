@@ -4,14 +4,16 @@
 
 var titlesCollection = []; //collects list of titles in survey_templates database
 var idCollection = []; //collects list of id's in survey_templates database
+var idTemplatesCollection = [];
 var loadCheck = false; // flag used to see if the "load" action can fire. False means it can.
 var questionCheck = false; // flag used to see if a new question can be added. False means it can.
-
+var completedCheck = false;
 /* populates titlesCollection and idCollection
 */
 function displayQuestionList (records) {
 	titlesCollection = []; // re-initialize to empty so collection doesn't keep adding on each re-load.
 	idCollection = [];
+	idTemplatesCollection = [];
 	var questionNum = 1;
 
 	for (record in records){
@@ -25,6 +27,24 @@ function displayQuestionList (records) {
 	};
 };
 
+function displayCollectionList (records) {
+	titlesCollection = [];
+	idTemplatesCollection = [];
+	idCollection = [];
+	var questionNum = 1;
+	
+	for (record in records){
+		if(record != "surveyTitle" && record != "id" && record != "_id"){
+			var surveyTemplateID = records[record]["template_id"];
+			var surveyID = records[record]["id"];
+			idTemplatesCollection.push(surveyTemplateID);
+			idCollection.push(surveyID);
+			questionNum += 1;
+		};
+	};
+};
+
+
 /* when the load button is clicked, first function checkes to see if loadCheck is false. If it is
  * then the page is made empty and the current questions are removed and repopulated with the surveyID
  * titles and ids of the records stored in survey templates. sidebar is populated with just a generic title.
@@ -32,6 +52,7 @@ function displayQuestionList (records) {
 $( "#load" ).click(function() {
 	if (loadCheck === false){
 		questionCheck = true;
+		completedCheck = false;
 		$('#build_title').empty();
 		$('.question').remove();
 		$('.sidebarQuestion').remove();
@@ -61,23 +82,44 @@ $( "#load" ).click(function() {
 /* action when a survey is clicked on the load screen. Gets target of "a" tag clicked, makes call to
  * survey templates, and retrieves record that matches id. The survey is then loaded on page.
 */
+
 $("#build_parent").on("click", "a", function() {
 		questionCheck = false; //allows new questions to be added
 		var getID = event.target.id; // gets id of a tag clicked
 		loadCheck = false; // allows the load screen to appear again if necessary.
-	var A
-	$.get(("http://localhost:5000/api/read/survey_templates"), function (data, status) {
-		for (var i = 0; i< idCollection.length; i++){
-			if (idCollection[i] == getID){
-				var idHit = i + 1 // idHit refers to the index item to use for the matching ID found.
-			}}
-
-		A = data;
-		A = JSON && JSON.parse(A) || $.parseJSON(A);
-		console.log(A)
+	var endUserData
+	if (completedCheck == false){
+		$.get(("http://localhost:5000/api/read/survey_templates"), function (data, status) {
+			for (var i = 0; i< idCollection.length; i++){
+				if (idCollection[i] == getID){
+					var idHit = i + 1 // idHit refers to the index item to use for the matching ID found.
+				}};
+		endUserData = data;
+		endUserData = JSON && JSON.parse(endUserData) || $.parseJSON(endUserData);
 		console.log(idHit)
-		loadAdminSurvey(A,idHit) // need to reference data with idHit within function because of Ajax call.
+		loadAdminSurvey(endUserData,idHit) // need to reference data with idHit within function because of Ajax call.
 		});
+	}
+	else{
+			var surveyTemplate
+			$.get(("http://localhost:5000/api/read/survey_templates"), function (data, status) {
+				var idHits
+				var found = false;
+				console.log(idCollection)
+				for (record in idCollection){
+					if (found === false){
+						templateIDCheck = idTemplatesCollection[record]
+						if (templateIDCheck === getID) {
+							idHits = templateIDCheck
+							found = true;
+						};
+				};
+		};	
+				surveyTemplate = data;
+				surveyTemplate = JSON && JSON.parse(surveyTemplate) || $.parseJSON(surveyTemplate);
+				loadCompleteSurvey(surveyTemplate,getID)// need to reference data with idHit within function because of Ajax call.
+			});
+	}
 });
 
 /* when deleteSurvey is clicked on load screen, the id is generated and se
@@ -138,6 +180,7 @@ function deleteSurveyTemplate(record, collection) {
 $( "#loadComplete" ).click(function() {
 		loadCheck = false;
 		questionCheck = true;
+		completedCheck = true;
 		$('#build_title').empty();
 		$('.question').remove();
 		$('.sidebarQuestion').remove();
@@ -146,17 +189,18 @@ $( "#loadComplete" ).click(function() {
 		$.get(("http://localhost:5000/api/read/completed_surveys"), function (data, status) {
 			A = data;
 			A = JSON && JSON.parse(A) || $.parseJSON(A);
+			console.log(A)
 			var mainPage = "";
-			mainPage = displayQuestionList(A); // populates id and title collection
-		
-			if (titlesCollection.length > 0) {
+			mainPage = displayCollectionList(A); // populates id and title collection
+			
+			if (idTemplatesCollection.length > 0) {
 				// rebuilds title display
 				$("#build_title").html("<p>Select Completed Survey to Load</p><ul id='load_menu'></ul>");
 				
 				// loops through title collection and rebuilds build_title section on page with names of surveys.
 				// adds a tags to each to use for selection purposes.
-				for (var i = 0; i < titlesCollection.length; i++) {
-					$("#build_title").append("<li><a href='#' id='" +idCollection[i]+ "'>" +idCollection[i]+'</a><button class = "deleteCompletedSurvey" id="deleteCompletedSurvey-'+idCollection[i]+'">Delete</button></li>')
+				for (var i = 0; i < idTemplatesCollection.length; i++) {
+					$("#build_title").append("<li><a href='#' id='" +idTemplatesCollection[i]+ "'>" + idTemplatesCollection[i] + ": " + idCollection[i]+'</a><button class = "deleteCompletedSurvey" id="deleteCompletedSurvey-'+idTemplatesCollection[i]+'">Delete</button></li>')
 				};
 			};
 		});
@@ -192,26 +236,35 @@ $('#build_title').on("click", ".deleteCompletedSurvey", function(event){
 	record["id"] = getID
 	console.log(record)
 	deleteCompletedSurvey(record,"completed_surveys") // makes ajax call to delete record from collection
+	
+	
 	// next 4 calls clear screen for re-display of survey templates.
+	loadCheck = false;
+	questionCheck = true;
+	completedCheck = true;
 	$('#build_title').empty();
 	$('.question').remove();
 	$('.sidebarQuestion').remove();
-	$('#sidebar p').html("Survey Title");
-	
-	// re-display screen so it shows the updated collection.
+	$('#sidebar p').html("Survey Title")
 	var A;
-	$.get(("http://localhost:5000/api/read/completed_surveys"), function (data, status) {
-		A = data;
-		A = JSON && JSON.parse(A) || $.parseJSON(A);
-		var mainPage = "";
-		mainPage = displayQuestionList(A); // populate collection arrays.
-		if(titlesCollection.length > 0) {
-			$("#build_title").html("<p>Select Survey to Load</p><ul id='load_menu'></ul>");
-			for(var i = 0; i < titlesCollection.length; i++) {
-				$("#build_title").append("<li><a href='#' id='" +idCollection[i]+ "'>" +idCollection[i]+'</a><button class = "deleteSurvey" id="deleteSurvey-'+idCollection[i]+'">Delete</button></li>')
-			}
-		};
-	});
+		$.get(("http://localhost:5000/api/read/completed_surveys"), function (data, status) {
+			A = data;
+			A = JSON && JSON.parse(A) || $.parseJSON(A);
+			console.log(A)
+			var mainPage = "";
+			mainPage = displayCollectionList(A); // populates id and title collection
+			
+			if (idTemplatesCollection.length > 0) {
+				// rebuilds title display
+				$("#build_title").html("<p>Select Completed Survey to Load</p><ul id='load_menu'></ul>");
+				
+				// loops through title collection and rebuilds build_title section on page with names of surveys.
+				// adds a tags to each to use for selection purposes.
+				for (var i = 0; i < idTemplatesCollection.length; i++) {
+					$("#build_title").append("<li><a href='#' id='" +idTemplatesCollection[i]+ "'>" + idTemplatesCollection[i] + ": " + idCollection[i]+'</a><button class = "deleteCompletedSurvey" id="deleteCompletedSurvey-'+idTemplatesCollection[i]+'">Delete</button></li>')
+				};
+			};
+		});
 });
 
 function deleteCompletedSurvey(record, collection) {
@@ -234,5 +287,10 @@ function deleteCompletedSurvey(record, collection) {
                     console.log(error);
                 }
             });
+}
+
+function getCompletedSurvey(){
+	
+	
 }
 
