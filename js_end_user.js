@@ -1,9 +1,3 @@
-
-
-
-
-
-
 /* loops through survey record and displays each question in html to user
 */
 function displayQuestionList (records) {
@@ -82,7 +76,7 @@ function textHTML(questionNum,questionText){
 function radioHTML(questionNum, questionText, name, options){
 	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>";
 	for (option in options){
-	optionLine = '<input type="radio" name="' + name + ' value="'+options[option] + '">' + options[option] + '<br>'
+	optionLine = '<input type="radio" id="' +questionNum+ 'radio" name="' +questionNum+ 'radio" value="'+options[option] + '">' + options[option] + '<br>'
 	html += optionLine
 	}
 	return html;
@@ -92,7 +86,7 @@ function radioHTML(questionNum, questionText, name, options){
 function checkboxHTML(questionNum, questionText, name, options){
 	html = "<p><hr><br>" + questionNum + ". " + questionText + "<br>"
 	for (option in options){
-	optionLine = '<input type="checkbox" name="' + name + ' value="'+options[option] + '">' + options[option] + '<br>'
+	optionLine = '<input type="checkbox" id="' +questionNum+ 'checkbox" name="' + questionNum + 'checkbox" value="'+options[option] + '">' + options[option] + '<br>'
 	html += optionLine
 	}
 	return html;
@@ -138,4 +132,11 @@ $(document).ready(function() {
 		mainPage = displayQuestionList(A);
 		document.getElementById("user_area").innerHTML = mainPage; //Needs to change based on location for final website
 	});	
+});
+
+
+//GET INPUT VALUES
+$(document.body).on("change", "#Answer", function () {
+	var a = $("#Answer").val();
+	console.log(a);
 });
