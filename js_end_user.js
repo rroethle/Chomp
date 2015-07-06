@@ -122,21 +122,31 @@ function sliderHTML(questionNum,questionText,name,lowerlimit,upperlimit){
 //$("#load").click(function() {
 $(document).ready(function() {
 	console.log("Page Loaded")
-	var a = window.location.toString();
-	a = a.substring(a.indexOf('survey=')+7);
-	console.log("Survey ID is: " + a);
+	var args = window.location.toString();
+	enduserID = args.substring(args.indexOf('survey=')+7);
+	console.log("Enduser ID is: " + enduserID);
 
-	var A;
-	$.get(("http://localhost:5000/api/read/survey_templates/" + a), function (data, status) {
-		A = data;
-		console.log("A is " + A);
-		A = JSON && JSON.parse(A) || $.parseJSON(A);
+	var enduserData;
+	$.get(("http://localhost:5000/api/read/completed_surveys/" + enduserID), function (enduser_data, status) {
+		enduserData = enduser_data;
+		console.log("Data is " + enduserData);
+		var enduserJSON = JSON && JSON.parse(enduserData) || $.parseJSON(enduserData);
+
+		var templateID = enduserJSON["template_id"];
+		console.log("Template that was used is: " + templateID);
+
+		$.get(("http://localhost:5000/api/read/survey_templates/" + templateID), function (template_data, status) {
+			templateData = template_data;
+			console.log(typeof templateData);
+			console.log(templateData);
+			var templateJSON = JSON && JSON.parse(templateData) || $.parseJSON(templateData);
 
 
-		var mainPage = "";
-		mainPage = displayQuestionList(A);
-		document.getElementById("user_area").innerHTML = mainPage; //Needs to change based on location for final website
-	});	
+			var mainPage = "";
+			mainPage = displayQuestionList(templateJSON);
+			document.getElementById("user_area").innerHTML = mainPage; //Needs to change based on location for final website
+		});	
+	});
 });
 
 
