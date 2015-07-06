@@ -115,7 +115,7 @@ $('#build_title').on("click", ".deleteSurvey", function(event){
 // ajax post to delete survey template from collection.
 function deleteSurveyTemplate(record, collection) {
 	$.get("http://localhost:5000/api/delete/"+collection + "/" + record)
-     /* $.ajax({
+     $.ajax({
                 url: 'http://localhost:5000/api/delete/' + collection + "/"+record["id"],
                 type: 'POST',
                 data: JSON.stringify(record),
@@ -132,6 +132,107 @@ function deleteSurveyTemplate(record, collection) {
                     console.log("Failed")
                     console.log(error);
                 }
-            }); */
+            });
+}
+
+$( "#loadComplete" ).click(function() {
+		loadCheck = false;
+		questionCheck = true;
+		$('#build_title').empty();
+		$('.question').remove();
+		$('.sidebarQuestion').remove();
+		$('#sidebar p').html("Survey Title")
+		var A;
+		$.get(("http://localhost:5000/api/read/completed_surveys"), function (data, status) {
+			A = data;
+			A = JSON && JSON.parse(A) || $.parseJSON(A);
+			var mainPage = "";
+			mainPage = displayQuestionList(A); // populates id and title collection
+		
+			if (titlesCollection.length > 0) {
+				// rebuilds title display
+				$("#build_title").html("<p>Select Completed Survey to Load</p><ul id='load_menu'></ul>");
+				
+				// loops through title collection and rebuilds build_title section on page with names of surveys.
+				// adds a tags to each to use for selection purposes.
+				for (var i = 0; i < titlesCollection.length; i++) {
+					$("#build_title").append("<li><a href='#' id='" +idCollection[i]+ "'>" +idCollection[i]+'</a><button class = "deleteCompletedSurvey" id="deleteCompletedSurvey-'+idCollection[i]+'">Delete</button></li>')
+				};
+			};
+		});
+});
+
+
+function pushCompletedSurvey(record, collection) {
+     $.ajax({
+                url: 'http://localhost:5000/api/create/' + collection,
+                type: 'POST',
+                data: JSON.stringify(record),
+                contentType: "application/json",
+                crossDomain: true,
+                headers: {'Content-Type':'application/json; charset=utf-8'},
+                dataType: 'json',
+
+                success: function(response) {
+                    console.log("Passed")
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.log("Failed")
+                    console.log(error);
+                }
+            });
+}
+
+$('#build_title').on("click", ".deleteCompletedSurvey", function(event){
+	record = {} // initialize empty object to pass into delete Ajax call.
+	var getButtonID = event.target.id;
+	var getID = getButtonID.substr(getButtonID.indexOf("-") + 1); // parses out ID from getButtonID
+	getID = getID.toString() // converts id to string to store into record object
+	record["id"] = getID
+	console.log(record)
+	deleteCompletedSurvey(record,"completed_surveys") // makes ajax call to delete record from collection
+	// next 4 calls clear screen for re-display of survey templates.
+	$('#build_title').empty();
+	$('.question').remove();
+	$('.sidebarQuestion').remove();
+	$('#sidebar p').html("Survey Title");
+	
+	// re-display screen so it shows the updated collection.
+	var A;
+	$.get(("http://localhost:5000/api/read/completed_surveys"), function (data, status) {
+		A = data;
+		A = JSON && JSON.parse(A) || $.parseJSON(A);
+		var mainPage = "";
+		mainPage = displayQuestionList(A); // populate collection arrays.
+		if(titlesCollection.length > 0) {
+			$("#build_title").html("<p>Select Survey to Load</p><ul id='load_menu'></ul>");
+			for(var i = 0; i < titlesCollection.length; i++) {
+				$("#build_title").append("<li><a href='#' id='" +idCollection[i]+ "'>" +idCollection[i]+'</a><button class = "deleteSurvey" id="deleteSurvey-'+idCollection[i]+'">Delete</button></li>')
+			}
+		};
+	});
+});
+
+function deleteCompletedSurvey(record, collection) {
+	$.get("http://localhost:5000/api/delete/"+collection + "/" + record)
+     $.ajax({
+                url: 'http://localhost:5000/api/delete/' + collection + "/"+record["id"],
+                type: 'POST',
+                data: JSON.stringify(record),
+                contentType: "application/json",
+                crossDomain: true,
+                headers: {'Content-Type':'application/json; charset=utf-8'},
+                dataType: 'json',
+
+                success: function(response) {
+                    console.log("Passed")
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.log("Failed")
+                    console.log(error);
+                }
+            });
 }
 
