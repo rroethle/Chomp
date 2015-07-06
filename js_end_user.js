@@ -163,6 +163,34 @@ $(document.body).on("change", ".answer", function () {
 	}
 });
 
+	$('body').on('click','#save',function(){
+		pushCompletedSurvey(survey,"completed_surveys")
+});
+
+function pushCompletedSurvey(record, collection) {
+     $.ajax({
+                url: 'http://localhost:5000/api/create/' + collection,
+                type: 'POST',
+                data: JSON.stringify(record),
+                contentType: "application/json",
+                crossDomain: true,
+                headers: {'Content-Type':'application/json; charset=utf-8'},
+                dataType: 'json',
+
+                success: function(response) {
+                    console.log("Passed")
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.log("Failed")
+                    console.log(error);
+                }
+            });
+}
+
+
+
+
 /*
 $(document.body).on("change", "#slider", function () {
 	var s = $("#slider").val();
